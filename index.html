@@ -7,6 +7,14 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Service Worker for cache management -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let reg of registrations) reg.unregister();
+  });
+}
+</script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="海绵饱饱">
 <meta name="theme-color" content="#FFB6C1">
@@ -15,6 +23,22 @@
 <link rel="apple-touch-icon" href="icon.svg" id="appleIconLink">
 <link rel="manifest" href="manifest.json">
 <title>海绵饱饱</title>
+<script>
+// Force open in Safari when launched as PWA standalone on iOS
+(function() {
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua);
+  var isStandalone = navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  if (isIOS && isStandalone) {
+    // Don't redirect immediately, check if page loads first
+    var currentUrl = window.location.href;
+    var correctUrl = 'https://haimianbaobao121.github.io/sponge-baby/';
+    if (currentUrl.indexOf('haimianbaobao121') === -1 || currentUrl.indexOf('sponge-baby') === -1) {
+      window.location.href = correctUrl;
+    }
+  }
+})();
+</script>
 <style>
 /* ==================== 全局变量与重置 ==================== */
 :root {
