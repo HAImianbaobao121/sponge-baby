@@ -2037,30 +2037,9 @@ function getSearchLink(platform, title) {
 }
 
 function openTopicLink(platform, title) {
-  // 先尝试唤起App
-  var appScheme = '';
-  if (platform === 'dy') {
-    // 抖音 scheme: snssdk1128://
-    appScheme = 'snssdk1128://search/' + encodeURIComponent(title) + '?type=1';
-  } else {
-    // 小红书 scheme: xhsdiscover://
-    appScheme = 'xhsdiscover://search/' + encodeURIComponent(title);
-  }
-  
   var appName = platform === 'dy' ? '抖音' : '小红书';
-  var startTime = Date.now();
-  
-  // 尝试打开App
-  window.location.href = appScheme;
-  
-  // 如果2秒后还在当前页面，说明没唤起成功，复制标题
-  setTimeout(function() {
-    if (Date.now() - startTime < 2500) {
-      // 还在页面上，说明App没打开
-      copyToClipboard(title);
-      toast('已复制「' + title.substring(0, 20) + '...」，请打开' + appName + '搜索');
-    }
-  }, 2000);
+  copyToClipboard(title);
+  toast('已复制「' + title.substring(0, 20) + (title.length > 20 ? '...' : '') + '」，请打开' + appName + '粘贴搜索');
 }
 
 function copyToClipboard(text) {
