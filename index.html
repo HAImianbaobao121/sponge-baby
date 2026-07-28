@@ -2036,6 +2036,56 @@ function getSearchLink(platform, title) {
   return 'https://www.xiaohongshu.com/search_result?keyword=' + encodeURIComponent(title);
 }
 
+function openTopicLink(platform, title) {
+  // 先尝试唤起App
+  var appScheme = '';
+  if (platform === 'dy') {
+    // 抖音 scheme: snssdk1128://
+    appScheme = 'snssdk1128://search/' + encodeURIComponent(title) + '?type=1';
+  } else {
+    // 小红书 scheme: xhsdiscover://
+    appScheme = 'xhsdiscover://search/' + encodeURIComponent(title);
+  }
+  
+  var appName = platform === 'dy' ? '抖音' : '小红书';
+  var startTime = Date.now();
+  
+  // 尝试打开App
+  window.location.href = appScheme;
+  
+  // 如果2秒后还在当前页面，说明没唤起成功，复制标题
+  setTimeout(function() {
+    if (Date.now() - startTime < 2500) {
+      // 还在页面上，说明App没打开
+      copyToClipboard(title);
+      toast('已复制「' + title.substring(0, 20) + '...」，请打开' + appName + '搜索');
+    }
+  }, 2000);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(function() {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+}
+
 function getHotTopics() {
   return Store.get('hot_topics', {});
 }
@@ -2116,9 +2166,8 @@ function renderInspiration() {
     `;
   } else {
     const dyList = (hotData.dy || []).map(t => {
-      const searchUrl = getSearchLink('dy', t.title);
       return `
-      <div class="hot-card dy" onclick="window.open('${searchUrl}', '_blank')">
+      <div class="hot-card dy" onclick="openTopicLink('dy','${escapeHtml(t.title).replace(/'/g, "\\'")}')">
         <div class="hot-card-header">
           <span class="hot-platform dy">抖音</span>
           <span class="tag tag-red">🔥 爆款</span>
@@ -2127,16 +2176,15 @@ function renderInspiration() {
         <div class="hot-meta">
           <span>❤️ ${t.likes}</span>
           <span>📅 ${hotData.date}</span>
-          <a class="hot-link-btn dy" href="${searchUrl}" target="_blank" onclick="event.stopPropagation()">🔗 去抖音搜索</a>
+          <a class="hot-link-btn dy" href="javascript:void(0)" onclick="event.stopPropagation();openTopicLink('dy','${escapeHtml(t.title).replace(/'/g, "\\'")}')">📱 打开抖音</a>
         </div>
         <div class="hot-tags">${(t.tags||[]).map(tag => `<span class="hot-tag">#${escapeHtml(tag)}</span>`).join('')}</div>
       </div>
     `}).join('');
     
     const xhsList = (hotData.xhs || []).map(t => {
-      const searchUrl = getSearchLink('xhs', t.title);
       return `
-      <div class="hot-card xhs" onclick="window.open('${searchUrl}', '_blank')">
+      <div class="hot-card xhs" onclick="openTopicLink('xhs','${escapeHtml(t.title).replace(/'/g, "\\'")}')">
         <div class="hot-card-header">
           <span class="hot-platform xhs">小红书</span>
           <span class="tag tag-red">🔥 爆款</span>
@@ -2145,7 +2193,7 @@ function renderInspiration() {
         <div class="hot-meta">
           <span>❤️ ${t.likes}</span>
           <span>📅 ${hotData.date}</span>
-          <a class="hot-link-btn xhs" href="${searchUrl}" target="_blank" onclick="event.stopPropagation()">🔗 去小红书搜索</a>
+          <a class="hot-link-btn xhs" href="javascript:void(0)" onclick="event.stopPropagation();openTopicLink('xhs','${escapeHtml(t.title).replace(/'/g, "\\'")}')">📱 打开小红书</a>
         </div>
         <div class="hot-tags">${(t.tags||[]).map(tag => `<span class="hot-tag">#${escapeHtml(tag)}</span>`).join('')}</div>
       </div>
