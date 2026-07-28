@@ -738,7 +738,10 @@ button { cursor: pointer; }
   box-shadow: var(--shadow);
   margin-bottom: 10px;
   border-left: 3px solid var(--primary);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
 }
+.hot-card:active { transform: scale(.98); }
 
 .hot-card.dy { border-left-color: #333; }
 .hot-card.xhs { border-left-color: #FF2442; }
@@ -767,13 +770,37 @@ button { cursor: pointer; }
   line-height: 1.4;
 }
 
+.hot-title a {
+  color: inherit;
+  text-decoration: none;
+}
+.hot-title a:active { color: var(--primary-dark); }
+
 .hot-meta {
   font-size: 12px;
   color: var(--text-light);
   display: flex;
   gap: 12px;
+  align-items: center;
   flex-wrap: wrap;
 }
+
+.hot-link-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: opacity .15s;
+}
+.hot-link-btn:active { opacity: .7; }
+.hot-link-btn.dy { background: #333; color: #fff; }
+.hot-link-btn.xhs { background: #FF2442; color: #fff; }
 
 .hot-tags {
   display: flex;
@@ -838,6 +865,17 @@ button { cursor: pointer; }
   transition: opacity .2s;
 }
 .idea-item:hover .idea-actions { opacity: 1; }
+
+.idea-link {
+  margin-bottom: 8px;
+}
+.idea-link a {
+  font-size: 12px;
+  color: var(--primary-dark);
+  text-decoration: none;
+  word-break: break-all;
+}
+.idea-link a:active { opacity: .7; }
 
 /* ==================== 体重记录 ==================== */
 .weight-stats {
@@ -1991,6 +2029,13 @@ const HOT_TOPICS_TEMPLATES = {
   ]
 };
 
+function getSearchLink(platform, title) {
+  if (platform === 'dy') {
+    return 'https://www.douyin.com/search/' + encodeURIComponent(title);
+  }
+  return 'https://www.xiaohongshu.com/search_result?keyword=' + encodeURIComponent(title);
+}
+
 function getHotTopics() {
   return Store.get('hot_topics', {});
 }
@@ -2070,8 +2115,10 @@ function renderInspiration() {
       </div>
     `;
   } else {
-    const dyList = (hotData.dy || []).map(t => `
-      <div class="hot-card dy">
+    const dyList = (hotData.dy || []).map(t => {
+      const searchUrl = getSearchLink('dy', t.title);
+      return `
+      <div class="hot-card dy" onclick="window.open('${searchUrl}', '_blank')">
         <div class="hot-card-header">
           <span class="hot-platform dy">抖音</span>
           <span class="tag tag-red">🔥 爆款</span>
@@ -2080,13 +2127,16 @@ function renderInspiration() {
         <div class="hot-meta">
           <span>❤️ ${t.likes}</span>
           <span>📅 ${hotData.date}</span>
+          <a class="hot-link-btn dy" href="${searchUrl}" target="_blank" onclick="event.stopPropagation()">🔗 去抖音搜索</a>
         </div>
         <div class="hot-tags">${(t.tags||[]).map(tag => `<span class="hot-tag">#${escapeHtml(tag)}</span>`).join('')}</div>
       </div>
-    `).join('');
+    `}).join('');
     
-    const xhsList = (hotData.xhs || []).map(t => `
-      <div class="hot-card xhs">
+    const xhsList = (hotData.xhs || []).map(t => {
+      const searchUrl = getSearchLink('xhs', t.title);
+      return `
+      <div class="hot-card xhs" onclick="window.open('${searchUrl}', '_blank')">
         <div class="hot-card-header">
           <span class="hot-platform xhs">小红书</span>
           <span class="tag tag-red">🔥 爆款</span>
@@ -2095,10 +2145,11 @@ function renderInspiration() {
         <div class="hot-meta">
           <span>❤️ ${t.likes}</span>
           <span>📅 ${hotData.date}</span>
+          <a class="hot-link-btn xhs" href="${searchUrl}" target="_blank" onclick="event.stopPropagation()">🔗 去小红书搜索</a>
         </div>
         <div class="hot-tags">${(t.tags||[]).map(tag => `<span class="hot-tag">#${escapeHtml(tag)}</span>`).join('')}</div>
       </div>
-    `).join('');
+    `}).join('');
     
     hotHtml = `
       <div class="auto-collect-info">
@@ -2117,6 +2168,7 @@ function renderInspiration() {
     ideasHtml = ideas.slice().reverse().map(i => `
       <div class="idea-item">
         <div class="idea-text">${escapeHtml(i.text)}</div>
+        ${i.link ? `<div class="idea-link"><a href="${escapeHtml(i.link)}" target="_blank" onclick="event.stopPropagation()">🔗 ${escapeHtml(i.link.length > 50 ? i.link.substring(0,50)+'...' : i.link)}</a></div>` : ''}
         <div class="idea-footer">
           <div class="idea-time">${i.createdAtStr || ''}</div>
           <div class="idea-actions">
@@ -2167,14 +2219,19 @@ function showAddIdeaModal() {
     body: `
       <div class="form-group">
         <label class="form-label">你的灵感</label>
-        <textarea class="input" id="ideaTextInput" rows="4" placeholder="把脑中的想法写下来，以后可以变成视频哦~" style="resize:none"></textarea>
+        <textarea class="input" id="ideaTextInput" rows="3" placeholder="把脑中的想法写下来，以后可以变成视频哦~" style="resize:none"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">参考链接（选填）</label>
+        <input class="input" id="ideaLinkInput" placeholder="https://... 粘贴相关链接" />
       </div>
     `,
     onConfirm: () => {
       const text = document.getElementById('ideaTextInput').value.trim();
       if (!text) { toast('请输入内容'); return false; }
+      const link = document.getElementById('ideaLinkInput').value.trim();
       const ideas = getIdeas();
-      ideas.push({ id: uid(), text, createdAt: Date.now(), createdAtStr: dateTimeStr() });
+      ideas.push({ id: uid(), text, link: link || '', createdAt: Date.now(), createdAtStr: dateTimeStr() });
       Store.set('ideas', ideas);
       renderPage('inspiration');
       toast('灵感已记录');
@@ -2192,13 +2249,20 @@ function editIdea(id) {
     title: '✏️ 编辑点子',
     body: `
       <div class="form-group">
-        <textarea class="input" id="ideaTextInput" rows="4" style="resize:none">${escapeHtml(idea.text)}</textarea>
+        <label class="form-label">内容</label>
+        <textarea class="input" id="ideaTextInput" rows="3" style="resize:none">${escapeHtml(idea.text)}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">参考链接（选填）</label>
+        <input class="input" id="ideaLinkInput" value="${escapeHtml(idea.link || '')}" placeholder="https://..." />
       </div>
     `,
     onConfirm: () => {
       const text = document.getElementById('ideaTextInput').value.trim();
       if (!text) { toast('请输入内容'); return false; }
+      const link = document.getElementById('ideaLinkInput').value.trim();
       idea.text = text;
+      idea.link = link || '';
       Store.set('ideas', ideas);
       renderPage('inspiration');
       toast('已更新');
