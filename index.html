@@ -1451,6 +1451,80 @@ button { cursor: pointer; }
 
 /* SVG 渐变定义 */
 .svg-defs { position: absolute; width: 0; height: 0; }
+
+/* ==================== 播客 ==================== */
+.podcast-featured {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--radius);
+  padding: 24px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.podcast-featured:active { transform: scale(.98); }
+.podcast-featured-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.25);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.podcast-featured-icon { font-size: 48px; margin-bottom: 10px; }
+.podcast-featured-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.podcast-featured-author { font-size: 14px; opacity: .85; margin-bottom: 8px; }
+.podcast-featured-desc { font-size: 13px; opacity: .75; line-height: 1.5; }
+
+.podcast-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.podcast-card:active { transform: scale(.98); }
+.podcast-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+  width: 50px;
+  text-align: center;
+}
+.podcast-info { flex: 1; min-width: 0; }
+.podcast-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.podcast-author { font-size: 12px; color: var(--text-light); margin-bottom: 4px; }
+.podcast-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.podcast-cat {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--primary-bg);
+  color: var(--primary-dark);
+}
+.podcast-play {
+  font-size: 22px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -1491,6 +1565,9 @@ button { cursor: pointer; }
       </li>
       <li class="nav-item" data-page="finance" onclick="switchPage('finance')">
         <span class="nav-icon">💰</span><span class="nav-label">收支明细</span>
+      </li>
+      <li class="nav-item" data-page="podcast" onclick="switchPage('podcast')">
+        <span class="nav-icon">🎧</span><span class="nav-label">播客</span>
       </li>
     </ul>
     <div class="sidebar-footer">
@@ -1666,6 +1743,7 @@ function renderPage(page) {
     case 'inspiration': main.innerHTML = renderInspiration(); initInspiration(); break;
     case 'weight': main.innerHTML = renderWeight(); initWeight(); break;
     case 'finance': main.innerHTML = renderFinance(); initFinance(); break;
+    case 'podcast': main.innerHTML = renderPodcast(); initPodcast(); break;
   }
 }
 
@@ -3038,6 +3116,129 @@ function renderDebts() {
 }
 
 function initFinance() {}
+
+/* ==================== 6. 播客 ==================== */
+const PODCAST_LIST = [
+  {
+    id: 'p1',
+    title: '得意忘形',
+    author: '张潇雨',
+    desc: '关于自我成长、人生哲学与商业思考，每一期都像一场深度对话',
+    icon: '🧠',
+    category: '自我成长',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e74543a418a84a0461b26e3'
+  },
+  {
+    id: 'p2',
+    title: '知行小酒馆',
+    author: '有知有行',
+    desc: '聊聊投资、理财和更好的生活，让你对钱有更清醒的认知',
+    icon: '🍷',
+    category: '财商提升',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6013f9f58e2f7ee375cf4216'
+  },
+  {
+    id: 'p3',
+    title: '文化有限',
+    author: '大壹 / 星光 / 超哥',
+    desc: '每周分享一本好书，三个人的闲聊中收获知识和见解',
+    icon: '📚',
+    category: '阅读文化',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/603bec7f8a2216f28ab3c1d2'
+  },
+  {
+    id: 'p4',
+    title: '声东击西',
+    author: '徐涛',
+    desc: '一群驻美记者带来的多元视角，聊聊世界正在发生什么',
+    icon: '🌍',
+    category: '社会观察',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e74521b418a84a046e88f11'
+  },
+  {
+    id: 'p5',
+    title: '忽左忽右',
+    author: '程衍樑',
+    desc: '文化沙龙类播客，话题横跨历史、文学、哲学和社会议题',
+    icon: '🎙️',
+    category: '历史文化',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7453fe418a84a046e9d3b7'
+  },
+  {
+    id: 'p6',
+    title: '梁文道·八分',
+    author: '梁文道',
+    desc: '道长带你读书、看世界，用理性和温情解读当下热点',
+    icon: '📖',
+    category: '人文思想',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7455ff418a84a0465c83c6'
+  }
+];
+
+function renderPodcast() {
+  const today = todayStr();
+  
+  // 根据日期选一个"今日推荐"
+  const seed = parseInt(today.split('-').join('')) % PODCAST_LIST.length;
+  const featured = PODCAST_LIST[seed];
+  
+  const podcastCards = PODCAST_LIST.map(p => `
+    <div class="podcast-card" onclick="openPodcast('${p.url}')">
+      <div class="podcast-icon">${p.icon}</div>
+      <div class="podcast-info">
+        <div class="podcast-title">${escapeHtml(p.title)}</div>
+        <div class="podcast-author">🎤 ${escapeHtml(p.author)}</div>
+        <div class="podcast-desc">${escapeHtml(p.desc)}</div>
+        <span class="podcast-cat">${escapeHtml(p.category)}</span>
+      </div>
+      <div class="podcast-play">▶</div>
+    </div>
+  `).join('');
+  
+  return `
+    <div class="page-header">
+      <div>
+        <h1 class="page-title"><span class="page-title-icon">🎧</span>播客</h1>
+        <div class="page-desc">每天听一点，悄悄变优秀</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <!-- 今日推荐 -->
+      <div class="podcast-featured" onclick="openPodcast('${featured.url}')">
+        <div class="podcast-featured-badge">🌟 今日推荐</div>
+        <div class="podcast-featured-icon">${featured.icon}</div>
+        <div class="podcast-featured-title">${escapeHtml(featured.title)}</div>
+        <div class="podcast-featured-author">${escapeHtml(featured.author)}</div>
+        <div class="podcast-featured-desc">${escapeHtml(featured.desc)}</div>
+        <button class="btn btn-primary" style="margin-top:10px">▶ 开始收听</button>
+      </div>
+      
+      <!-- 播客列表 -->
+      <div class="section-header" style="margin-top:20px">
+        <div class="section-title">🎙️ 精选播客</div>
+        <div style="font-size:12px;color:var(--text-light)">点击跳转小宇宙App收听</div>
+      </div>
+      ${podcastCards}
+      
+      <div style="text-align:center;margin-top:20px;padding:16px;background:var(--bg-card);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
+        💡 提示：点击播客将跳转到<strong>小宇宙App</strong>收听<br>
+        如未安装小宇宙，可在App Store搜索下载
+      </div>
+    </div>
+  `;
+}
+
+function openPodcast(url) {
+  // 尝试唤起小宇宙App
+  window.location.href = url;
+  // 如果2秒后还在，复制链接
+  setTimeout(() => {
+    copyToClipboard(url);
+    toast('已复制链接，请打开小宇宙App粘贴收听');
+  }, 2000);
+}
+
+function initPodcast() {}
 
 function switchFinanceType(type) {
   currentFinanceType = type;
