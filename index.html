@@ -2404,7 +2404,7 @@ function renderWeight() {
     <div class="dinner-record">
       <div style="flex:1;min-width:0">
         <div class="dinner-date">${d.date.slice(5)} <span class="dinner-day">${d.day}</span></div>
-        ${status === 'eat' ? `<div style="font-size:12px;color:var(--text-sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🍽 ${escapeHtml(food || '未记录')}</div>` : ''}
+        ${status === 'eat' ? `<div style="font-size:12px;color:var(--text-sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🍽 ${escapeHtml(food || '未记录')} <a href="javascript:void(0)" onclick="editDinnerFood('${d.date}')" style="color:var(--primary-dark);font-weight:600;margin-left:4px">✏️修改</a></div>` : ''}
         ${status === 'noeat' ? `<div style="font-size:12px;color:var(--success);margin-top:3px">🌿 今晚未进食</div>` : ''}
         ${!status ? `<div style="font-size:12px;color:var(--text-light);margin-top:3px">未记录</div>` : ''}
       </div>
@@ -2552,39 +2552,70 @@ function deleteWeight(id) {
 function setDinner(date, status) {
   const records = getDinnerRecords();
   const current = records[date] || {};
-  // 再次点击同一状态取消
-  if (current.status === status) {
+  // 如果已经选了"食"，再次点"食"时弹出编辑框（不是取消）
+  if (status === 'eat' && current.status === 'eat') {
+    editDinnerFood(date);
+    return;
+  }
+  // 如果已经选了"不食"，再次点"不食"则取消
+  if (status === 'noeat' && current.status === 'noeat') {
     delete records[date];
-  } else {
-    // 切换为"食"时弹出输入框记录吃了什么
-    if (status === 'eat') {
-      const prevFood = current.food || '';
-      showModal({
-        title: '🍚 今晚吃了什么？',
-        body: `
-          <div class="form-group">
-            <label class="form-label">记录晚餐内容</label>
-            <textarea class="input" id="dinnerFoodInput" rows="3" placeholder="如：米饭+青菜炒肉+一个苹果" style="resize:none">${escapeHtml(prevFood)}</textarea>
-            <div style="font-size:12px;color:var(--text-light);margin-top:6px">方便第二天与体重变化做对比参考</div>
-          </div>
-        `,
-        onConfirm: () => {
-          const food = document.getElementById('dinnerFoodInput').value.trim();
-          records[date] = { status: 'eat', food: food || '未记录具体内容' };
-          Store.set('dinner_records', records);
-          renderPage('weight');
-          toast('已记录晚餐');
-          return true;
-        }
-      });
-      setTimeout(() => { const el = document.getElementById('dinnerFoodInput'); if(el) el.focus(); }, 100);
-      return;
-    } else {
-      records[date] = { status: 'noeat' };
-    }
     Store.set('dinner_records', records);
     renderPage('weight');
+    return;
   }
+  // 切换为"食"时弹出输入框记录吃了什么
+  if (status === 'eat') {
+    const prevFood = current.food || '';
+    showModal({
+      title: '🍚 今晚吃了什么？',
+      body: `
+        <div class="form-group">
+          <label class="form-label">记录晚餐内容</label>
+          <textarea class="input" id="dinnerFoodInput" rows="3" placeholder="如：米饭+青菜炒肉+一个苹果" style="resize:none">${escapeHtml(prevFood)}</textarea>
+          <div style="font-size:12px;color:var(--text-light);margin-top:6px">方便第二天与体重变化做对比参考</div>
+        </div>
+      `,
+      onConfirm: () => {
+        const food = document.getElementById('dinnerFoodInput').value.trim();
+        records[date] = { status: 'eat', food: food || '未记录具体内容' };
+        Store.set('dinner_records', records);
+        renderPage('weight');
+        toast('已记录晚餐');
+        return true;
+      }
+    });
+    setTimeout(() => { const el = document.getElementById('dinnerFoodInput'); if(el) el.focus(); }, 100);
+    return;
+  } else {
+    records[date] = { status: 'noeat' };
+  }
+  Store.set('dinner_records', records);
+  renderPage('weight');
+}
+
+function editDinnerFood(date) {
+  const records = getDinnerRecords();
+  const current = records[date] || {};
+  const prevFood = current.food || '';
+  showModal({
+    title: '✏️ 修改晚餐内容',
+    body: `
+      <div class="form-group">
+        <label class="form-label">修改晚餐内容</label>
+        <textarea class="input" id="dinnerFoodInput" rows="3" placeholder="如：米饭+青菜炒肉+一个苹果" style="resize:none">${escapeHtml(prevFood === '未记录具体内容' ? '' : prevFood)}</textarea>
+      </div>
+    `,
+    onConfirm: () => {
+      const food = document.getElementById('dinnerFoodInput').value.trim();
+      records[date] = { status: 'eat', food: food || '未记录具体内容' };
+      Store.set('dinner_records', records);
+      renderPage('weight');
+      toast('已更新晚餐内容');
+      return true;
+    }
+  });
+  setTimeout(() => { const el = document.getElementById('dinnerFoodInput'); if(el) el.focus(); }, 100);
 }
 
 /* ==================== 5. 收支明细 ==================== */
