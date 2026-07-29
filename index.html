@@ -7,6 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="build-version" content="4">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -14,6 +15,24 @@ if ('serviceWorker' in navigator) {
     for(let reg of registrations) reg.unregister();
   });
 }
+// Auto-refresh when new version detected
+(function() {
+  var CURRENT_VERSION = '4';
+  var saved = localStorage.getItem('spongeBaby_version');
+  if (saved && saved !== CURRENT_VERSION) {
+    localStorage.setItem('spongeBaby_version', CURRENT_VERSION);
+    // Force reload to get latest version
+    if (window.caches) {
+      caches.keys().then(function(names) {
+        for (var i = 0; i < names.length; i++) {
+          caches.delete(names[i]);
+        }
+      });
+    }
+  } else {
+    localStorage.setItem('spongeBaby_version', CURRENT_VERSION);
+  }
+})();
 </script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="海绵饱饱">
