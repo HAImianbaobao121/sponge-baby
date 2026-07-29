@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="5">
+<meta name="build-version" content="6">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '5';
+  var CURRENT_VERSION = '6';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1552,22 +1552,22 @@ button { cursor: pointer; }
     </div>
     <ul class="nav-list" id="navList">
       <li class="nav-item active" data-page="checkin" onclick="switchPage('checkin')">
-        <span class="nav-icon">✅</span><span class="nav-label">每日打卡</span>
+        <span class="nav-icon">🌸</span><span class="nav-label">每日打卡</span>
       </li>
       <li class="nav-item" data-page="memo" onclick="switchPage('memo')">
         <span class="nav-icon">📝</span><span class="nav-label">备忘录</span>
       </li>
       <li class="nav-item" data-page="inspiration" onclick="switchPage('inspiration')">
-        <span class="nav-icon">💡</span><span class="nav-label">选题灵感</span>
+        <span class="nav-icon">✨</span><span class="nav-label">选题灵感</span>
       </li>
       <li class="nav-item" data-page="weight" onclick="switchPage('weight')">
-        <span class="nav-icon">⚖️</span><span class="nav-label">体重记录</span>
+        <span class="nav-icon">🏃‍♀️</span><span class="nav-label">体重记录</span>
       </li>
       <li class="nav-item" data-page="finance" onclick="switchPage('finance')">
-        <span class="nav-icon">💰</span><span class="nav-label">收支明细</span>
+        <span class="nav-icon">💎</span><span class="nav-label">收支明细</span>
       </li>
       <li class="nav-item" data-page="podcast" onclick="switchPage('podcast')">
-        <span class="nav-icon">🎧</span><span class="nav-label">播客</span>
+        <span class="nav-icon">🎵</span><span class="nav-label">播客</span>
       </li>
     </ul>
     <div class="sidebar-footer">
