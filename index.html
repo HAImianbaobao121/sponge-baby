@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="8">
+<meta name="build-version" content="9">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '8';
+  var CURRENT_VERSION = '9';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1511,6 +1511,57 @@ button { cursor: pointer; }
   color: var(--primary);
   flex-shrink: 0;
 }
+
+/* ==================== 每日常识 ==================== */
+.knowledge-date-badge {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 16px;
+  padding: 8px;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+}
+.knowledge-card {
+  display: flex;
+  gap: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  border-left: 4px solid var(--primary);
+  transition: transform .15s;
+}
+.knowledge-card:active { transform: scale(.99); }
+.knowledge-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-bg);
+  border-radius: 50%;
+}
+.knowledge-content { flex: 1; min-width: 0; }
+.knowledge-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+.knowledge-cat {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--primary-bg);
+  color: var(--primary-dark);
+  display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -1554,6 +1605,9 @@ button { cursor: pointer; }
       </li>
       <li class="nav-item" data-page="podcast" onclick="switchPage('podcast')">
         <span class="nav-icon">🎵</span><span class="nav-label">播客</span>
+      </li>
+      <li class="nav-item" data-page="knowledge" onclick="switchPage('knowledge')">
+        <span class="nav-icon">📖</span><span class="nav-label">每日常识</span>
       </li>
     </ul>
     <div class="sidebar-footer">
@@ -1730,6 +1784,7 @@ function renderPage(page) {
     case 'weight': main.innerHTML = renderWeight(); initWeight(); break;
     case 'finance': main.innerHTML = renderFinance(); initFinance(); break;
     case 'podcast': main.innerHTML = renderPodcast(); initPodcast(); break;
+    case 'knowledge': main.innerHTML = renderKnowledge(); initKnowledge(); break;
   }
 }
 
@@ -3223,6 +3278,114 @@ function openPodcast(url) {
 }
 
 function initPodcast() {}
+
+/* ==================== 7. 每日常识 ==================== */
+const KNOWLEDGE_BANK = [
+  { cat: '科学', text: '人体最硬的部位不是骨头，而是牙齿表面的牙釉质，其硬度仅次于金刚石。', icon: '🔬' },
+  { cat: '科学', text: '打喷嚏时，心脏会暂停跳动约一毫秒，所以有人说"Bless you"祝福你。', icon: '🔬' },
+  { cat: '科学', text: '金星是太阳系中最热的行星，表面温度高达465°C，比水星还热，因为温室效应极其严重。', icon: '🪐' },
+  { cat: '科学', text: '手机屏幕上的细菌数量是马桶座的10倍，记得定期用酒精棉片擦拭。', icon: '📱' },
+  { cat: '科学', text: '眼泪有三种：基础泪液（润滑）、反射泪液（切洋葱）、情绪泪液（悲伤）。只有情绪泪液含蛋白质和激素。', icon: '💧' },
+  { cat: '历史', text: '秦始皇兵马俑原本是彩色的，出土后接触空气几分钟内颜色就氧化褪去了。', icon: '🏛️' },
+  { cat: '历史', text: '莎士比亚和西班牙作家塞万提斯都在1616年4月23日去世，这一天后来成为"世界读书日"。', icon: '📜' },
+  { cat: '历史', text: '铁达尼号沉没前，船上有一本价值连城的《鲁拜集》镶嵌了1050颗宝石，至今下落不明。', icon: '🚢' },
+  { cat: '历史', text: '古罗马人用尿液漱口美白牙齿，因为尿液中的氨有漂白作用。', icon: '🏺' },
+  { cat: '生活', text: '香蕉皮内侧擦拭皮鞋可以起到抛光效果，因为含有天然油脂和钾。', icon: '🍌' },
+  { cat: '生活', text: '煮鸡蛋时加一勺盐可以防止蛋壳破裂，因为盐水密度大，减缓了蛋白膨胀速度。', icon: '🥚' },
+  { cat: '生活', text: '微波炉加热食物不均匀的原因：微波形成驻波，波峰处加热快，波节处几乎不加热。转盘就是为了解决这个问题。', icon: '🍽️' },
+  { cat: '生活', text: '饭后不要立刻刷牙！食物中的酸性物质会软化牙釉质，等30分钟再刷。', icon: '🪥' },
+  { cat: '生活', text: '蜂蜜是唯一不会变质的食物，考古学家在埃及金字塔中发现3000年前的蜂蜜仍然可以食用。', icon: '🍯' },
+  { cat: '心理', text: '"邓宁-克鲁格效应"：能力差的人往往高估自己，能力强的人反而会低估自己。这就是为什么越无知越自信。', icon: '🧩' },
+  { cat: '心理', text: '人的短期记忆只能同时记住7±2个信息块，这就是为什么电话号码是7位。', icon: '🧠' },
+  { cat: '心理', text: '"破窗效应"：环境中的小问题不被修复，会引发更多更大的破坏行为。保持整洁真的很重要。', icon: '🪟' },
+  { cat: '地理', text: '世界上最小的国家梵蒂冈面积仅0.44平方公里，比北京天安门广场还小，但拥有自己的邮局和广播电台。', icon: '🌍' },
+  { cat: '地理', text: '澳大利亚的国花金合欢（Wattle）在每年9月1日全国庆祝"金合欢日"。', icon: '🌸' },
+  { cat: '地理', text: '加拿大拥有世界上最多的湖泊，超过300万个，占全球淡水湖总量的60%。', icon: '🏞️' },
+  { cat: '经济', text: '"口红效应"：经济不景气时口红销量反而上升，因为人们买不起大件奢侈品，转买小件犒赏自己。', icon: '💄' },
+  { cat: '经济', text: '世界上最贵的咖啡是"猫屎咖啡"（Kopi Luwak），由麝香猫吃下咖啡果后排出，每磅高达600美元。', icon: '☕' },
+  { cat: '经济', text: '"拿铁因子"：每天一杯30元的咖啡，一年就是1万多元。小钱花得不知不觉，但积少成多很惊人。', icon: '💰' },
+  { cat: '健康', text: '人每天脱落约50-100根头发是正常的，但如果一天超过150根就要注意了。', icon: '💇' },
+  { cat: '健康', text: '笑能降低压力激素皮质醇水平，增加免疫细胞活性。每天大笑15分钟，相当于做了一次有氧运动。', icon: '😄' },
+  { cat: '健康', text: '早起喝一杯温水比咖啡更提神，因为夜间脱水会导致疲劳感，补水就能缓解。', icon: '💧' },
+  { cat: '文化', text: '日本有种职业叫"孤独美食家体验师"，专门一个人去餐厅吃饭并写评测。', icon: '🍣' },
+  { cat: '文化', text: '在冰岛，给新生儿取名必须从政府批准的名单中选，目的是保护冰岛语的传统名字不被遗忘。', icon: '🇮🇸' },
+  { cat: '文化', text: '法国法律规定超市不得丢弃未售出的食品，必须捐赠给慈善机构，否则罚款。', icon: '🇫🇷' },
+  { cat: '动物', text: '章鱼有三颗心脏、九个大脑（一个中央脑+每条触手一个副脑），血液是蓝色的。', icon: '🐙' },
+  { cat: '动物', text: '海獭睡觉时会手拉手，防止被水流冲散，这个画面被称为"自然界最可爱的现象"。', icon: '🦦' },
+  { cat: '动物', text: '蜜蜂的翅膀每分钟扇动约200次，产生的嗡嗡声实际上来自胸腔肌肉的高速振动。', icon: '🐝' },
+  { cat: '科技', text: '你手机的计算能力比1969年阿波罗11号登月时的计算机强10万倍以上。', icon: '🚀' },
+  { cat: '科技', text: '互联网上90%的数据是在过去两年内产生的，每天产生2.5万亿字节的新数据。', icon: '💻' },
+  { cat: '科技', text: '二维码（QR码）的纠错能力最高可达30%，即使损坏三分之一仍可读取。', icon: '📱' }
+];
+
+function getKnowledge() {
+  return Store.get('knowledge', {});
+}
+
+function getTodayKnowledge() {
+  const today = todayStr();
+  const saved = getKnowledge();
+  if (saved.date === today && saved.items) return saved.items;
+  
+  // 基于日期种子选取5条
+  const seed = parseInt(today.split('-').join(''));
+  const picked = [];
+  const used = new Set();
+  for (let i = 0; i < 5; i++) {
+    const idx = (seed + i * 13 + i * i * 7) % KNOWLEDGE_BANK.length;
+    if (!used.has(idx)) {
+      picked.push(KNOWLEDGE_BANK[idx]);
+      used.add(idx);
+    }
+  }
+  // 如果不够5条，补足
+  for (let i = 0; picked.length < 5 && i < KNOWLEDGE_BANK.length; i++) {
+    if (!used.has(i)) { picked.push(KNOWLEDGE_BANK[i]); used.add(i); }
+  }
+  
+  Store.set('knowledge', { date: today, items: picked });
+  return picked;
+}
+
+function renderKnowledge() {
+  const items = getTodayKnowledge();
+  const today = todayStr();
+  
+  const cards = items.map((k, idx) => `
+    <div class="knowledge-card">
+      <div class="knowledge-num">${idx + 1}</div>
+      <div class="knowledge-content">
+        <div class="knowledge-text">${escapeHtml(k.text)}</div>
+        <span class="knowledge-cat">${k.icon} ${escapeHtml(k.cat)}</span>
+      </div>
+    </div>
+  `).join('');
+  
+  return `
+    <div class="page-header">
+      <div>
+        <h1 class="page-title"><span class="page-title-icon">📖</span>每日常识</h1>
+        <div class="page-desc">每天学一点，悄悄变博学</div>
+      </div>
+      <button class="btn btn-primary" onclick="refreshKnowledge()">🔄 换一批</button>
+    </div>
+    <div class="page-content">
+      <div class="knowledge-date-badge">📅 ${today} · 今日精选</div>
+      ${cards}
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-light)">
+        💡 每日自动更新5条不同领域的常识
+      </div>
+    </div>
+  `;
+}
+
+function refreshKnowledge() {
+  Store.set('knowledge', {});
+  renderPage('knowledge');
+  toast('已刷新');
+}
+
+function initKnowledge() {}
 
 function switchFinanceType(type) {
   currentFinanceType = type;
