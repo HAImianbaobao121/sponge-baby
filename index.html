@@ -1702,9 +1702,9 @@ function renderCheckin() {
       return `
         <div class="checkin-item ${isDone ? 'done' : ''}">
           <div class="checkin-checkbox ${isDone ? 'checked' : ''}" onclick="toggleCheckin('${t.id}')">${isDone ? '✓' : ''}</div>
-          <div class="checkin-content">
+          <div class="checkin-content" onclick="editTask('${t.id}')">
             <div class="checkin-name">${escapeHtml(t.name)}</div>
-            <div class="checkin-time">⏰ ${escapeHtml(t.time || '全天')}</div>
+            <div class="checkin-time">⏰ ${escapeHtml(t.time || '全天')} <span style="font-size:10px;color:var(--primary-dark);margin-left:4px">✏️点击编辑</span></div>
           </div>
           <button class="checkin-delete" onclick="deleteTask('${t.id}')" title="删除">🗑</button>
         </div>
@@ -1795,7 +1795,46 @@ function renderCheckin() {
 }
 
 function initCheckin() {
-  // 无需额外初始化
+  // 请求通知权限
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+  scheduleNotifications();
+}
+
+// 定时提醒
+let notificationTimers = [];
+function scheduleNotifications() {
+  // 清除旧定时器
+  notificationTimers.forEach(clearTimeout);
+  notificationTimers = [];
+  
+  if (!('Notification' in window)) return;
+  
+  const tasks = getTasks();
+  const now = new Date();
+  
+  tasks.forEach(t => {
+    if (!t.time || t.time === '全天') return;
+    const [h, m] = t.time.split(':').map(Number);
+    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+    const delay = target - now;
+    
+    if (delay > 0 && delay < 86400000) {
+      const timer = setTimeout(() => {
+        if (Notification.permission === 'granted') {
+          new Notification('⏰ 海绵饱饱提醒', {
+            body: '该完成「' + t.name + '」啦！',
+            icon: 'icon.svg',
+            tag: 'sponge-checkin-' + t.id
+          });
+        }
+        // 如果页面打开，也弹 toast
+        toast('⏰ 该完成「' + t.name + '」啦！');
+      }, delay);
+      notificationTimers.push(timer);
+    }
+  });
 }
 
 function showAddTaskModal() {
@@ -1820,6 +1859,39 @@ function showAddTaskModal() {
       Store.set('checkin_tasks', tasks);
       renderPage('checkin');
       toast('任务已添加');
+      return true;
+    }
+  });
+  setTimeout(() => document.getElementById('taskNameInput').focus(), 100);
+}
+
+function editTask(id) {
+  const tasks = getTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  showModal({
+    title: '✏️ 编辑任务',
+    body: `
+      <div class="form-group">
+        <label class="form-label">任务名称</label>
+        <input type="text" class="input" id="taskNameInput" value="${escapeHtml(task.name)}" maxlength="30">
+      </div>
+      <div class="form-group">
+        <label class="form-label">提醒时间</label>
+        <input type="time" class="input" id="taskTimeInput" value="${escapeHtml(task.time && task.time !== '全天' ? task.time : '')}">
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px">留空则不提醒</div>
+      </div>
+    `,
+    onConfirm: () => {
+      const name = document.getElementById('taskNameInput').value.trim();
+      const time = document.getElementById('taskTimeInput').value || '全天';
+      if (!name) { toast('请输入任务名称'); return false; }
+      task.name = name;
+      task.time = time;
+      Store.set('checkin_tasks', tasks);
+      scheduleNotifications();
+      renderPage('checkin');
+      toast('任务已更新');
       return true;
     }
   });
