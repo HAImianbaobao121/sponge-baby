@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="12">
+<meta name="build-version" content="13">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '12';
+  var CURRENT_VERSION = '13';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1346,8 +1346,10 @@ button { cursor: pointer; }
   }
   
   .sidebar-footer {
-    display: none;
+    padding: 8px 0;
+    text-align: center;
   }
+  .sidebar-footer a { font-size: 11px; }
   
   .nav-list {
     display: flex;
@@ -3386,7 +3388,9 @@ function renderKnowledge() {
 }
 
 function refreshKnowledge() {
-  Store.set('knowledge', {});
+  const shuffled = KNOWLEDGE_BANK.slice().sort(() => Math.random() - 0.5);
+  const picked = shuffled.slice(0, 5);
+  Store.set('knowledge', { date: todayStr(), items: picked });
   renderPage('knowledge');
   toast('已刷新');
 }
