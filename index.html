@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="11">
+<meta name="build-version" content="12">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '11';
+  var CURRENT_VERSION = '12';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1611,7 +1611,7 @@ button { cursor: pointer; }
       </li>
     </ul>
     <div class="sidebar-footer">
-      数据本地存储 · 永不丢失
+      <a href="javascript:void(0)" onclick="forceRefresh()" style="color:var(--primary-dark);text-decoration:none;font-weight:600">🔄 检查更新</a>
     </div>
   </aside>
 
@@ -3974,6 +3974,19 @@ function removeAvatarImage() {
 // 启动
 document.addEventListener('DOMContentLoaded', init);
 if (document.readyState !== 'loading') init();
+
+// 手动强制刷新
+function forceRefresh() {
+  if (window.caches) {
+    caches.keys().then(function(names) {
+      for (var i = 0; i < names.length; i++) caches.delete(names[i]);
+    }).then(function() {
+      window.location.reload(true);
+    });
+  } else {
+    window.location.reload(true);
+  }
+}
 
 // 防止双击缩放
 let lastTouch = 0;
