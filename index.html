@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="16">
+<meta name="build-version" content="17">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '16';
+  var CURRENT_VERSION = '17';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -3218,13 +3218,94 @@ const PODCAST_LIST = [
     icon: '📖',
     category: '人文思想',
     url: 'https://www.xiaoyuzhoufm.com/podcast/5e7455ff418a84a0465c83c6'
+  },
+  {
+    id: 'p7',
+    title: '随机波动',
+    author: '傅适野 / 张之琪 / 冷建国',
+    desc: '三位女性媒体人聊文学、电影、社会，视角独特又有趣',
+    icon: '🎙️',
+    category: '文化评论',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7455b5418a84a0465c83c4'
+  },
+  {
+    id: 'p8',
+    title: '无人知晓',
+    author: '孟岩',
+    desc: '有知有行创始人聊投资、创业和人生，真诚而深刻',
+    icon: '💡',
+    category: '投资人生',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/60a28b1e1f7f5d001f8b3c5e'
+  },
+  {
+    id: 'p9',
+    title: '故事FM',
+    author: '寇爱哲',
+    desc: '用你的声音讲述真实故事，每一个普通人都有不平凡的经历',
+    icon: '🎤',
+    category: '真实故事',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e74562a418a84a0465c9e6e'
+  },
+  {
+    id: 'p10',
+    title: '谐星聊天会',
+    author: '石老板 / 周奇墨',
+    desc: '单口喜剧演员的聊天节目，笑中带思考，轻松不浅薄',
+    icon: '😂',
+    category: '脱口秀',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5f2e3c3c3b3c3c001f3c3c3c'
+  },
+  {
+    id: 'p11',
+    title: '日谈公园',
+    author: '李志明 / 小伙子',
+    desc: '畅聊电影音乐文学旅行，最有人情味的泛文化播客',
+    icon: '🎭',
+    category: '泛文化',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7456b6418a84a0465c9e70'
+  },
+  {
+    id: 'p12',
+    title: 'Steve说',
+    author: 'Steve Shi',
+    desc: '心理学播客，聊亲密关系、自我认知和心理健康',
+    icon: '💭',
+    category: '心理学',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459a3418a84a0465c9e72'
+  },
+  {
+    id: 'p13',
+    title: '不合时宜',
+    author: '王磬 / 若含 / 孟常',
+    desc: '三个生活在不同时区的年轻人，聊世界与中国',
+    icon: '🌏',
+    category: '社会观察',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459b3418a84a0465c9e74'
+  },
+  {
+    id: 'p14',
+    title: '展开讲讲',
+    author: '洞姐 / 康堤 / 小乔',
+    desc: '从一本书、一部剧展开，聊聊背后的文化与社会',
+    icon: '📺',
+    category: '文化解读',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459c3418a84a0465c9e76'
+  },
+  {
+    id: 'p15',
+    title: '姜思达',
+    author: '姜思达',
+    desc: '30分钟纯个人表达，关于生活的观察和思考，独特而迷人',
+    icon: '🎨',
+    category: '个人表达',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459d3418a84a0465c9e78'
   }
 ];
 
 function renderPodcast() {
   const today = todayStr();
   
-  // 随机选一个"今日推荐"（如果今天还没选过就用日期种子，否则用随机）
+  // 随机选一个"今日推荐"
   var storedFeatured = Store.get('podcast_featured', {});
   var seed;
   if (storedFeatured.date === today) {
@@ -3235,7 +3316,18 @@ function renderPodcast() {
   }
   const featured = PODCAST_LIST[seed];
   
-  const podcastCards = PODCAST_LIST.map(p => `
+  // 获取显示的播客列表（默认6个，刷新时随机）
+  var displayed = Store.get('podcast_displayed', {});
+  var podcastList;
+  if (displayed.date === today && displayed.items) {
+    podcastList = displayed.items.map(id => PODCAST_LIST.find(p => p.id === id)).filter(Boolean);
+  }
+  if (!podcastList || podcastList.length < 6) {
+    podcastList = PODCAST_LIST.slice().sort(() => Math.random() - 0.5).slice(0, 6);
+    Store.set('podcast_displayed', { date: today, items: podcastList.map(p => p.id) });
+  }
+  
+  const podcastCards = podcastList.map(p => `
     <div class="podcast-card" onclick="openPodcast('${p.url}')">
       <div class="podcast-icon">${p.icon}</div>
       <div class="podcast-info">
@@ -3296,8 +3388,9 @@ function initPodcast() {}
 
 function refreshPodcast() {
   Store.set('podcast_featured', {});
+  Store.set('podcast_displayed', {});
   renderPage('podcast');
-  toast('已刷新推荐');
+  toast('已刷新播客列表');
 }
 
 /* ==================== 7. 每日常识 ==================== */
