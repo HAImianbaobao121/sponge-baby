@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="47">
+<meta name="build-version" content="48">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '47';
+  var CURRENT_VERSION = '48';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -42,6 +42,9 @@ if ('serviceWorker' in navigator) {
 <link rel="apple-touch-icon" href="icon.svg" id="appleIconLink">
 <link rel="manifest" href="manifest.json">
 <title>海绵饱饱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
 <script>
 // Auto-restore from backup on first visit
@@ -103,10 +106,10 @@ if ('serviceWorker' in navigator) {
   --bg-card: #FFFFFF;
   --bg-hover: #F7FBF7;
   --border: #E8F0E8;
-  --shadow: 0 2px 12px rgba(120, 200, 140, 0.08);
-  --shadow-hover: 0 4px 20px rgba(120, 200, 140, 0.12);
-  --radius: 14px;
-  --radius-sm: 10px;
+  --shadow: 0 4px 16px rgba(120, 200, 140, 0.1);
+  --shadow-hover: 0 8px 24px rgba(120, 200, 140, 0.15);
+  --radius: 18px;
+  --radius-sm: 14px;
   --sidebar-w: 200px;
 }
 
@@ -125,7 +128,7 @@ html, body {
   color: var(--text-main);
   background: var(--bg-main);
   -webkit-font-smoothing: antialiased;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
 }
 
 input, button, textarea, select {
@@ -206,8 +209,9 @@ button { cursor: pointer; }
 }
 
 .sidebar-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   color: var(--text-main);
   white-space: nowrap;
   overflow: hidden;
@@ -250,7 +254,7 @@ button { cursor: pointer; }
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all .2s ease;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: #3A4A36;
   font-weight: 600;
   font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -277,7 +281,7 @@ button { cursor: pointer; }
 
 .nav-label { font-size: 15px; font-weight: 600; flex: 1; }
 
-.nav-label { font-size: 14px; flex: 1; }
+.nav-label { font-size: 14px; flex: 1; font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif; }
 
 .sidebar-footer {
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
@@ -341,13 +345,14 @@ button { cursor: pointer; }
 .page-title {
   font-size: 24px;
   font-weight: 700;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   color: var(--text-main);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.page-title-icon { font-size: 22px; }
+.page-title-icon { font-size: 24px; }
 
 .page-desc {
   font-size: 13px;
@@ -364,14 +369,20 @@ button { cursor: pointer; }
 .card {
   background: var(--bg-card);
   border-radius: var(--radius);
-  padding: 18px;
+  padding: 20px;
   box-shadow: var(--shadow);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 .card-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   margin-bottom: 14px;
   display: flex;
   align-items: center;
@@ -389,17 +400,18 @@ button { cursor: pointer; }
   padding: 9px 16px;
   border-radius: var(--radius-sm);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   transition: all .2s;
   white-space: nowrap;
 }
+.btn:active { transform: scale(.95); }
 
 .btn-primary {
   background: linear-gradient(135deg, #7DCE8C, #5DBE6F);
   color: #fff;
   box-shadow: 0 2px 8px rgba(93, 190, 111, 0.25);
 }
-.btn-primary:active { transform: scale(.97); }
+.btn-primary:active { transform: scale(.93); }
 
 .btn-ghost {
   background: var(--secondary-light);
@@ -432,11 +444,11 @@ button { cursor: pointer; }
   padding: 10px 14px;
   border-radius: var(--radius-sm);
   background: var(--bg-main);
-  border: 1.5px solid transparent;
+  border: 1.5px solid var(--border);
   transition: all .2s;
   font-size: 14px;
 }
-.input:focus { border-color: var(--primary); background: #fff; }
+.input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(125, 206, 140, 0.12); }
 
 .input-group {
   display: flex;
@@ -464,7 +476,17 @@ button { cursor: pointer; }
   padding: 40px 20px;
   color: var(--text-light);
 }
-.empty-state-icon { font-size: 40px; margin-bottom: 10px; opacity: .6; }
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  background: var(--primary-bg);
+  border-radius: 50%;
+  opacity: .8;
+}
 .empty-state-text { font-size: 14px; }
 
 /* ==================== 学习内容推荐卡片 ==================== */
@@ -575,16 +597,16 @@ button { cursor: pointer; }
 
 .progress-bar-track {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background: #F0F0F0;
-  border-radius: 3px;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 6px;
 }
 .progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, #7DCE8C, #5DBE6F);
-  border-radius: 3px;
+  border-radius: 8px;
   transition: width .5s ease;
 }
 
@@ -592,11 +614,12 @@ button { cursor: pointer; }
 .progress-date { font-size: 12px; color: var(--text-light); }
 .daily-motto {
   margin-bottom: 10px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--primary-bg);
   border-radius: var(--radius-sm);
   font-size: 15px;
   color: var(--primary-dark);
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   font-weight: 600;
   text-align: center;
   line-height: 1.6;
@@ -635,6 +658,13 @@ button { cursor: pointer; }
 .checkin-checkbox.checked {
   background: linear-gradient(135deg, var(--success), #4FA859);
   border-color: var(--success);
+  animation: pop .3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 .checkin-content {
@@ -774,6 +804,7 @@ button { cursor: pointer; }
 .section-title {
   font-size: 17px;
   font-weight: 700;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -956,6 +987,7 @@ button { cursor: pointer; }
 .stat-value {
   font-size: 22px;
   font-weight: 700;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
   color: var(--text-main);
 }
 .stat-value .unit { font-size: 12px; font-weight: 400; }.stat-trend {
@@ -1263,11 +1295,12 @@ button { cursor: pointer; }
   bottom: calc(30px + env(safe-area-inset-bottom, 0));
   left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: rgba(61, 44, 74, 0.92);
+  background: rgba(45, 60, 42, 0.92);
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 24px;
+  padding: 12px 24px;
+  border-radius: 28px;
   font-size: 13px;
+  font-weight: 600;
   z-index: 999;
   transition: transform .3s ease;
   pointer-events: none;
