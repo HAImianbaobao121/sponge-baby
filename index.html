@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="14">
+<meta name="build-version" content="15">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '14';
+  var CURRENT_VERSION = '15';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1606,7 +1606,7 @@ button { cursor: pointer; }
         <span class="nav-icon">🏃‍♀️</span><span class="nav-label">体重记录</span>
       </li>
       <li class="nav-item" data-page="finance" onclick="switchPage('finance')">
-        <span class="nav-icon">💎</span><span class="nav-label">收支明细</span>
+        <span class="nav-icon">💰</span><span class="nav-label">收支明细</span>
       </li>
       <li class="nav-item" data-page="podcast" onclick="switchPage('podcast')">
         <span class="nav-icon">🎵</span><span class="nav-label">播客</span>
@@ -3133,15 +3133,14 @@ function renderDebts() {
         <div class="finance-main-tab active">💳 总负债 <span style="font-size:11px;opacity:.8">${totalDebts.toFixed(0)}</span></div>
       </div>
       <div class="checkin-progress" style="margin-bottom:14px">
-        <div class="progress-ring-wrap">
-          <svg class="progress-ring" width="70" height="70">
-            <circle class="progress-ring-bg" cx="35" cy="35" r="30"></circle>
-            <circle class="progress-ring-fill" cx="35" cy="35" r="30" stroke-dasharray="${2*Math.PI*30}" stroke-dashoffset="${(2*Math.PI*30)*(1-debtPercent/100)}"></circle>
-          </svg>
-          <div class="progress-percent">${debtPercent}%</div>
-        </div>
-        <div class="progress-info">
-          <h3>${now.getMonth()+1}月还款 ${debtPaid}/${debtTotal}</h3>
+        <div class="progress-info-full">
+          <div class="progress-bar-header">
+            <h3>${now.getMonth()+1}月还款 ${debtPaid}/${debtTotal}</h3>
+            <span class="progress-percent-text">${debtPercent}%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width:${debtPercent}%;background:linear-gradient(90deg,#FF8C94,#FF9FB5)"></div>
+          </div>
           <p>${debtPercent===100?'🎉 本月全部还清！' : debtPercent>=50?'💪 已完成过半' : '📌 记得按时还款哦'}</p>
           <div class="progress-date">总额 ${totalDebts.toFixed(2)} 元</div>
         </div>
@@ -3248,6 +3247,7 @@ function renderPodcast() {
         <h1 class="page-title"><span class="page-title-icon">🎧</span>播客</h1>
         <div class="page-desc">每天听一点，悄悄变优秀</div>
       </div>
+      <button class="btn btn-primary" onclick="refreshPodcast()">🔄 换一批</button>
     </div>
     <div class="page-content">
       <!-- 今日推荐 -->
@@ -3286,6 +3286,11 @@ function openPodcast(url) {
 }
 
 function initPodcast() {}
+
+function refreshPodcast() {
+  renderPage('podcast');
+  toast('已刷新推荐');
+}
 
 /* ==================== 7. 每日常识 ==================== */
 const KNOWLEDGE_BANK = [
