@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="30">
+<meta name="build-version" content="31">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '30';
+  var CURRENT_VERSION = '31';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -86,11 +86,11 @@ if ('serviceWorker' in navigator) {
 <style>
 /* ==================== 全局变量与重置 ==================== */
 :root {
-  --primary: #FFD180;
-  --primary-dark: #FFB74D;
-  --primary-light: #FFE8B8;
-  --primary-bg: #FFF8ED;
-  --secondary: #FFCC80;
+  --primary: #FF9FB5;
+  --primary-dark: #FF7FA0;
+  --primary-light: #FFD4DD;
+  --primary-bg: #FFF5F7;
+  --secondary: #B5A8FF;
   --accent: #8FE3D0;
   --warning: #FFD166;
   --danger: #FF8C94;
@@ -119,11 +119,12 @@ if ('serviceWorker' in navigator) {
 html, body {
   height: 100%;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", -apple-system, sans-serif;
   font-size: 15px;
   color: var(--text-main);
   background: var(--bg-main);
   -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.3px;
 }
 
 input, button, textarea, select {
