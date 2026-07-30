@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="42">
+<meta name="build-version" content="43">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '42';
+  var CURRENT_VERSION = '43';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -36,7 +36,7 @@ if ('serviceWorker' in navigator) {
 </script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="海绵饱饱">
-<meta name="theme-color" content="#EDF4FA">
+<meta name="theme-color" content="#EEF7EA">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/svg+xml" href="icon.svg" id="faviconLink">
 <link rel="apple-touch-icon" href="icon.svg" id="appleIconLink">
@@ -86,12 +86,12 @@ if ('serviceWorker' in navigator) {
 <style>
 /* ==================== 全局变量与重置 ==================== */
 :root {
-  --primary: #A8C8E8;
-  --primary-dark: #8BB5D8;
-  --primary-light: #D8E8F5;
-  --primary-bg: #F2F7FC;
-  --secondary: #B8C8D8;
-  --accent: #A0B8C8;
+  --primary: #A8D8A0;
+  --primary-dark: #88C880;
+  --primary-light: #D8F0D0;
+  --primary-bg: #F4FAF2;
+  --secondary: #B8D8B0;
+  --accent: #A0C898;
   --warning: #FFD166;
   --danger: #E05555;
   --success: #5BAA6A;
@@ -150,7 +150,7 @@ button { cursor: pointer; }
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
-  background: linear-gradient(180deg, #F5F9FD 0%, #EDF4FA 100%);
+  background: linear-gradient(180deg, #F5FAF3 0%, #EEF7EA 100%);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -170,7 +170,7 @@ button { cursor: pointer; }
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #A8C8E8, #8BB5D8);
+  background: linear-gradient(135deg, #A8D8A0, #88C880);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -179,7 +179,7 @@ button { cursor: pointer; }
   font-size: 32px;
   flex-shrink: 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(140, 180, 210, 0.35);
+  box-shadow: 0 2px 8px rgba(130, 190, 120, 0.35);
   transition: transform .2s;
   position: relative;
   overflow: hidden;
@@ -259,9 +259,9 @@ button { cursor: pointer; }
 .nav-item:hover { background: var(--bg-hover); }
 
 .nav-item.active {
-  background: linear-gradient(135deg, #A8C8E8, #8BB5D8);
+  background: linear-gradient(135deg, #A8D8A0, #88C880);
   color: #fff;
-  box-shadow: 0 3px 10px rgba(140, 180, 210, 0.3);
+  box-shadow: 0 3px 10px rgba(130, 190, 120, 0.3);
 }
 
 .nav-icon {
@@ -1328,7 +1328,7 @@ button { cursor: pointer; }
     max-width: 62px;
     transform: none;
     flex-shrink: 0;
-    background: linear-gradient(180deg, #F5F9FD 0%, #EDF4FA 100%);
+    background: linear-gradient(180deg, #F5FAF3 0%, #EEF7EA 100%);
     border-right: 1px solid var(--border);
     border-bottom: none;
     padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
