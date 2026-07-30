@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="15">
+<meta name="build-version" content="16">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '15';
+  var CURRENT_VERSION = '16';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -3224,8 +3224,15 @@ const PODCAST_LIST = [
 function renderPodcast() {
   const today = todayStr();
   
-  // 根据日期选一个"今日推荐"
-  const seed = parseInt(today.split('-').join('')) % PODCAST_LIST.length;
+  // 随机选一个"今日推荐"（如果今天还没选过就用日期种子，否则用随机）
+  var storedFeatured = Store.get('podcast_featured', {});
+  var seed;
+  if (storedFeatured.date === today) {
+    seed = storedFeatured.idx;
+  } else {
+    seed = Math.floor(Math.random() * PODCAST_LIST.length);
+    Store.set('podcast_featured', { date: today, idx: seed });
+  }
   const featured = PODCAST_LIST[seed];
   
   const podcastCards = PODCAST_LIST.map(p => `
@@ -3288,6 +3295,7 @@ function openPodcast(url) {
 function initPodcast() {}
 
 function refreshPodcast() {
+  Store.set('podcast_featured', {});
   renderPage('podcast');
   toast('已刷新推荐');
 }
