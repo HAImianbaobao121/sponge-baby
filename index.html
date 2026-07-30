@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="43">
+<meta name="build-version" content="44">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '43';
+  var CURRENT_VERSION = '44';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -2358,21 +2358,46 @@ const HOT_TOPICS_TEMPLATES = {
     { title: '居家运动｜无器械瘦腿瘦肚子，亲测有效', tags: ['运动','瘦身','居家'], likes: '4.7w' }
   ],
   hot: [
-    { title: 'GGEZ手势舞挑战｜全网都在跳的爆款舞蹈', tags: ['手势舞','GGEZ','爆款挑战'], likes: '86.5w', trend: '🔥 本周最火' },
-    { title: '对镜自拍转场教程｜超火卡点变装模板', tags: ['转场','变装','教程'], likes: '52.3w', trend: '🔥 热榜TOP1' },
-    { title: '「你一句春不晚」古风变装挑战', tags: ['古风','变装','国风'], likes: '68.7w', trend: '🔥 热榜TOP2' },
-    { title: '跟着音乐卡点｜全网模仿的摇花手进阶版', tags: ['卡点','摇花手','舞蹈'], likes: '45.1w', trend: '🔥 热榜TOP3' },
-    { title: '三秒落泪挑战｜情绪表演赛道爆款', tags: ['演技','情绪','挑战'], likes: '39.8w', trend: '📈 热搜飙升' },
-    { title: '韩舞翻跳｜最新回归曲全网跟跳中', tags: ['韩舞','翻跳','Kpop'], likes: '55.6w', trend: '📈 热搜飙升' },
-    { title: '日常生活vlog模板｜沉浸式记录一天', tags: ['vlog','日常','模板'], likes: '33.2w', trend: '📈 热搜飙升' },
-    { title: '对口型唱歌挑战｜这几首歌全网都在唱', tags: ['对口型','唱歌','热门'], likes: '72.4w', trend: '🔥 热榜TOP1' },
-    { title: '房间一角氛围感拍照｜博主同款姿势教学', tags: ['拍照','氛围感','姿势'], likes: '28.9w', trend: '📈 热搜飙升' },
-    { title: '美食教程翻拍｜复刻网红同款美食挑战', tags: ['美食','复刻','教程'], likes: '41.7w', trend: '🔥 热榜TOP2' },
-    { title: '变装前后反差｜土味穿搭vs博主穿搭', tags: ['反差','穿搭','变装'], likes: '58.3w', trend: '🔥 热榜TOP3' },
-    { title: '零基础舞蹈教程｜每天三分钟学会一支舞', tags: ['舞蹈','教程','零基础'], likes: '36.5w', trend: '📈 热搜飙升' },
-    { title: '闺蜜合拍挑战｜双人卡点姿势大全', tags: ['合拍','闺蜜','挑战'], likes: '44.2w', trend: '📈 热搜飙升' },
-    { title: '素人改造计划｜路人变博主全流程', tags: ['改造','素人','博主'], likes: '63.9w', trend: '🔥 热榜TOP1' },
-    { title: '热门BGM使用指南｜配对音乐流量翻倍', tags: ['BGM','音乐','流量'], likes: '31.1w', trend: '📈 热搜飙升' },
+    { title: '科目三舞蹈挑战｜全网都在跳的魔性舞蹈', tags: ['科目三','舞蹈','挑战'], likes: '128.5w', trend: '🔥 本周最火' },
+    { title: '对镜自拍转场教程｜超火卡点变装模板', tags: ['转场','变装','教程'], likes: '92.3w', trend: '🔥 热榜TOP1' },
+    { title: '蛋仔派对 Gameplay分享｜超可爱通关攻略', tags: ['蛋仔派对','游戏','通关'], likes: '78.6w', trend: '🔥 热榜TOP2' },
+    { title: '跟着音乐卡点｜全网模仿的摇花手进阶版', tags: ['卡点','摇花手','舞蹈'], likes: '85.1w', trend: '🔥 热榜TOP3' },
+    { title: '三秒落泪挑战｜情绪表演赛道爆款', tags: ['演技','情绪','挑战'], likes: '69.8w', trend: '📈 热搜飙升' },
+    { title: '韩舞翻跳｜最新回归曲全网跟跳中', tags: ['韩舞','翻跳','Kpop'], likes: '95.6w', trend: '📈 热搜飙升' },
+    { title: '日常生活vlog模板｜沉浸式记录一天', tags: ['vlog','日常','模板'], likes: '53.2w', trend: '📈 热搜飙升' },
+    { title: '对口型唱歌挑战｜这几首歌全网都在唱', tags: ['对口型','唱歌','热门'], likes: '112.4w', trend: '🔥 热榜TOP1' },
+    { title: '房间一角氛围感拍照｜博主同款姿势教学', tags: ['拍照','氛围感','姿势'], likes: '48.9w', trend: '📈 热搜飙升' },
+    { title: '美食教程翻拍｜复刻网红同款美食挑战', tags: ['美食','复刻','教程'], likes: '61.7w', trend: '🔥 热榜TOP2' },
+    { title: '变装前后反差｜土味穿搭vs博主穿搭', tags: ['反差','穿搭','变装'], likes: '88.3w', trend: '🔥 热榜TOP3' },
+    { title: '零基础舞蹈教程｜每天三分钟学会一支舞', tags: ['舞蹈','教程','零基础'], likes: '56.5w', trend: '📈 热搜飙升' },
+    { title: '闺蜜合拍挑战｜双人卡点姿势大全', tags: ['合拍','闺蜜','挑战'], likes: '64.2w', trend: '📈 热搜飙升' },
+    { title: '素人改造计划｜路人变博主全流程', tags: ['改造','素人','博主'], likes: '83.9w', trend: '🔥 热榜TOP1' },
+    { title: '热门BGM使用指南｜配对音乐流量翻倍', tags: ['BGM','音乐','流量'], likes: '51.1w', trend: '📈 热搜飙升' },
+    { title: '恐龙抗狼手势舞｜魔性BGM全网跟跳', tags: ['恐龙抗狼','手势舞','魔性'], likes: '105.7w', trend: '🔥 本周最火' },
+    { title: '漫改变装｜二次元角色真人还原挑战', tags: ['漫改','变装','二次元'], likes: '76.8w', trend: '📈 热搜飙升' },
+    { title: '通勤穿搭一周不重样｜打工人OOTD', tags: ['通勤','穿搭','OOTD'], likes: '43.5w', trend: '📈 热搜飙升' },
+    { title: '一人食vlog｜独居女孩的治愈晚餐', tags: ['一人食','vlog','独居'], likes: '58.2w', trend: '📈 热搜飙升' },
+    { title: '反差感变身｜素颜到精致妆容全过程', tags: ['反差','妆容','变身'], likes: '91.4w', trend: '🔥 热榜TOP2' },
+    { title: '卡点剪辑教程｜小白也能剪出大片感', tags: ['剪辑','卡点','教程'], likes: '47.6w', trend: '📈 热搜飙升' },
+    { title: '情侣日常合拍｜甜甜的恋爱vlog', tags: ['情侣','合拍','恋爱'], likes: '72.3w', trend: '📈 热搜飙升' },
+    { title: '宿舍好物分享｜学生党平价提升幸福感', tags: ['宿舍','好物','学生党'], likes: '39.8w', trend: '📈 热搜飙升' },
+    { title: '宠物搞笑日常｜猫狗双全的快乐生活', tags: ['宠物','搞笑','日常'], likes: '98.5w', trend: '🔥 本周最火' },
+    { title: '古风汉服变装｜一秒穿越进画里', tags: ['汉服','古风','变装'], likes: '84.6w', trend: '🔥 热榜TOP3' },
+    { title: '减脂餐教程｜好吃不胖的一周食谱', tags: ['减脂餐','食谱','健康'], likes: '55.3w', trend: '📈 热搜飙升' },
+    { title: '翻唱热门歌曲｜嗓音太好听了吧', tags: ['翻唱','音乐','热门'], likes: '67.9w', trend: '📈 热搜飙升' },
+    { title: '拍照姿势大全｜拍出博主同款高级感', tags: ['拍照','姿势','高级感'], likes: '44.1w', trend: '📈 热搜飙升' },
+    { title: '手工DIY教程｜低成本装饰房间', tags: ['手工','DIY','装饰'], likes: '35.7w', trend: '📈 热搜飙升' },
+    { title: '健身打卡｜30天身材变化挑战', tags: ['健身','打卡','变化'], likes: '62.8w', trend: '📈 热搜飙升' },
+    { title: '美妆教程｜夏日清透底妆不脱妆', tags: ['美妆','底妆','夏日'], likes: '49.5w', trend: '📈 热搜飙升' },
+    { title: '旅行vlog｜小众景点打卡攻略', tags: ['旅行','vlog','打卡'], likes: '57.4w', trend: '📈 热搜飙升' },
+    { title: 'AI绘画挑战｜输入文字生成大片', tags: ['AI','绘画','科技'], likes: '73.2w', trend: '📈 热搜飙升' },
+    { title: '剧情短片反转｜最后结局意想不到', tags: ['剧情','反转','短片'], likes: '89.7w', trend: '🔥 热榜TOP2' },
+    { title: '开箱测评｜最近买到的神仙好物', tags: ['开箱','测评','好物'], likes: '46.3w', trend: '📈 热搜飙升' },
+    { title: '职场穿搭｜温柔知性通勤风', tags: ['职场','穿搭','通勤'], likes: '38.9w', trend: '📈 热搜飙升' },
+    { title: '早餐教程｜10分钟搞定精致brunch', tags: ['早餐','教程','brunch'], likes: '42.7w', trend: '📈 热搜飙升' },
+    { title: '房间收纳整理｜极简主义生活方式', tags: ['收纳','整理','极简'], likes: '34.6w', trend: '📈 热搜飙升' },
+    { title: '猫咪搞笑合集｜主子的迷惑行为', tags: ['猫咪','搞笑','合集'], likes: '102.3w', trend: '🔥 本周最火' },
+    { title: '温柔翻唱｜睡前必听治愈系歌曲', tags: ['翻唱','治愈','睡前'], likes: '54.8w', trend: '📈 热搜飙升' },
   ]
 };
 
@@ -2438,7 +2463,13 @@ function collectHotTopics() {
   
   const pickDy = shuffledDy.slice(0, 5);
   const pickXhs = shuffledXhs.slice(0, 5);
-  const pickHot = shuffledHot.slice(0, 4);
+  const pickHot = shuffledHot.slice(0, 6).map(t => {
+    // 随机波动点赞数，让每次刷新看起来有变化
+    const baseNum = parseFloat(t.likes);
+    const variance = Math.floor(Math.random() * 30) + 1;
+    const newNum = (baseNum + variance).toFixed(1);
+    return { ...t, likes: newNum + 'w' };
+  });
   
   const data = {
     date: today,
