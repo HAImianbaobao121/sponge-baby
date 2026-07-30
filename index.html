@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="19">
+<meta name="build-version" content="20">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '19';
+  var CURRENT_VERSION = '20';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -2348,26 +2348,16 @@ function getLastCollectDate() {
 
 function collectHotTopics() {
   const today = todayStr();
-  const lastDate = getLastCollectDate();
-  // 模拟采集：基于日期种子选取不同内容
-  const seed = today.split('-').join('');
-  const seedNum = parseInt(seed);
   
   const allDy = [...HOT_TOPICS_TEMPLATES.dy];
   const allXhs = [...HOT_TOPICS_TEMPLATES.xhs];
   
-  // 打乱并选取
-  const pickDy = [];
-  const pickXhs = [];
+  // 随机打乱并选取
+  const shuffledDy = allDy.sort(() => Math.random() - 0.5);
+  const shuffledXhs = allXhs.sort(() => Math.random() - 0.5);
   
-  for (let i = 0; i < 5; i++) {
-    const idx = (seedNum + i * 7) % allDy.length;
-    if (!pickDy.includes(allDy[idx])) pickDy.push(allDy[idx]);
-  }
-  for (let i = 0; i < 5; i++) {
-    const idx = (seedNum + i * 11) % allXhs.length;
-    if (!pickXhs.includes(allXhs[idx])) pickXhs.push(allXhs[idx]);
-  }
+  const pickDy = shuffledDy.slice(0, 5);
+  const pickXhs = shuffledXhs.slice(0, 5);
   
   const data = {
     date: today,
