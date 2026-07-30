@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="41">
+<meta name="build-version" content="42">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '41';
+  var CURRENT_VERSION = '42';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -394,17 +394,17 @@ button { cursor: pointer; }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: #333;
   color: #fff;
-  box-shadow: 0 2px 8px rgba(255, 127, 160, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 .btn-primary:active { transform: scale(.97); }
 
 .btn-ghost {
-  background: var(--primary-bg);
-  color: var(--primary);
+  background: #F5F5F5;
+  color: #333;
 }
-.btn-ghost:active { background: var(--primary-light); }
+.btn-ghost:active { background: #E8E8E8; }
 
 .btn-icon {
   width: 34px;
@@ -538,7 +538,7 @@ button { cursor: pointer; }
 .learn-tip {
   margin-top: 8px;
   padding: 12px;
-  background: linear-gradient(135deg, #F8F8F8, #F0F0F0);
+  background: var(--bg-card);
   border-radius: var(--radius-sm);
   font-size: 13px;
   color: var(--text-sub);
@@ -868,7 +868,7 @@ button { cursor: pointer; }
 }
 
 .auto-collect-info {
-  background: linear-gradient(135deg, #F8F8F8, #F0F0F0);
+  background: var(--bg-card);
   padding: 12px 14px;
   border-radius: var(--radius-sm);
   font-size: 13px;
@@ -1060,7 +1060,7 @@ button { cursor: pointer; }
 
 .summary-card.income { background: linear-gradient(135deg, #6BCB77, #4FA859); }
 .summary-card.expense { background: linear-gradient(135deg, #555, #444); }
-.summary-card.extra { background: linear-gradient(135deg, #B5A8FF, #8E7FE8); }
+.summary-card.extra { background: linear-gradient(135deg, #888, #666); }
 
 .summary-label { font-size: 12px; opacity: .9; margin-bottom: 4px; }
 .summary-amount { font-size: 20px; font-weight: 700; }
@@ -1596,7 +1596,7 @@ button { cursor: pointer; }
 }
 .holiday-item:last-child { border-bottom: none; }
 .holiday-item.today {
-  background: linear-gradient(135deg, #F8F8F8, #EEEEEE);
+  background: var(--bg-card);
   margin: 0 -14px;
   padding: 12px 14px;
   border-radius: var(--radius-sm);
@@ -1965,7 +1965,7 @@ function renderCheckin() {
         </div>
       </div>
       ${taskListHtml}
-      <div style="text-align:center;margin-top:16px;padding:12px;background:linear-gradient(135deg,#F8F8F8,#F0F0F0);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
+      <div style="text-align:center;margin-top:16px;padding:12px;background:linear-gradient(135deg,#FFFFFF,#FAFAFA);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
         📚 <a href="javascript:void(0)" onclick="switchPage('learn')" style="color:var(--primary-dark);font-weight:600;text-decoration:underline">查看今日学习推荐 →</a>
       </div>
     </div>
@@ -3137,7 +3137,7 @@ function renderFlow() {
         <div class="summary-card expense"><div class="summary-label">每日支出</div><div class="summary-amount">${totalExpense.toFixed(2)}<span class="unit">元</span></div><div class="summary-icon">🛍</div></div>
         <div class="summary-card extra"><div class="summary-label">额外收入</div><div class="summary-amount">${totalExtra.toFixed(2)}<span class="unit">元</span></div><div class="summary-icon">✨</div></div>
       </div>
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#F8F8F8,#F0F0F0)">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#FFFFFF,#FAFAFA)">
         <div>
           <div style="font-size:13px;color:var(--text-sub)">本月结余 · 净资产 ${netWorth>=0?'+':''}${netWorth.toFixed(0)}</div>
           <div style="font-size:24px;font-weight:700;color:${balance>=0?'var(--success)':'var(--danger)'}">${balance>=0?'+':''}${balance.toFixed(2)} <span style="font-size:14px;font-weight:400">元</span></div>
@@ -3760,7 +3760,7 @@ function renderHoliday() {
   const next5 = upcoming.slice(0, 5);
   // 今天的
   const todayHtml = todayList.length > 0 ? `
-    <div class="card" style="background:linear-gradient(135deg,#F8F8F8,#EEEEEE);margin-bottom:16px">
+    <div class="card" style="background:linear-gradient(135deg,#FFFFFF,#FAFAFA);margin-bottom:16px">
       <div class="card-title"><span class="card-title-icon">🎉</span>今天 · ${today} ${dayOfWeek(today)}</div>
       ${todayList.map(h => `<div class="holiday-item today"><span class="holiday-icon">${h.icon}</span><span class="holiday-name">${escapeHtml(h.name)}</span>${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':''}</div>`).join('')}
     </div>
