@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="17">
+<meta name="build-version" content="18">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '17';
+  var CURRENT_VERSION = '18';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1567,6 +1567,36 @@ button { cursor: pointer; }
   color: var(--primary-dark);
   display: inline-block;
 }
+
+/* ==================== 节日生日 ==================== */
+.holiday-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.holiday-item:last-child { border-bottom: none; }
+.holiday-item.today {
+  background: linear-gradient(135deg, #FFF5F7, #F8EEFF);
+  margin: 0 -14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+}
+.holiday-item.past { opacity: .5; }
+.holiday-icon { font-size: 24px; flex-shrink: 0; width: 36px; text-align: center; }
+.holiday-name { font-size: 15px; font-weight: 600; }
+.holiday-date { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.holiday-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #FFF0F5;
+  color: #FF7FA0;
+  margin-left: 6px;
+  vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -1609,10 +1639,13 @@ button { cursor: pointer; }
         <span class="nav-icon">💰</span><span class="nav-label">收支明细</span>
       </li>
       <li class="nav-item" data-page="podcast" onclick="switchPage('podcast')">
-        <span class="nav-icon">🎵</span><span class="nav-label">播客</span>
+        <span class="nav-icon">🎧</span><span class="nav-label">播客</span>
       </li>
       <li class="nav-item" data-page="knowledge" onclick="switchPage('knowledge')">
         <span class="nav-icon">📖</span><span class="nav-label">每日常识</span>
+      </li>
+      <li class="nav-item" data-page="holiday" onclick="switchPage('holiday')">
+        <span class="nav-icon">🎂</span><span class="nav-label">节日生日</span>
       </li>
     </ul>
     <div class="sidebar-footer">
@@ -1790,6 +1823,7 @@ function renderPage(page) {
     case 'finance': main.innerHTML = renderFinance(); initFinance(); break;
     case 'podcast': main.innerHTML = renderPodcast(); initPodcast(); break;
     case 'knowledge': main.innerHTML = renderKnowledge(); initKnowledge(); break;
+    case 'holiday': main.innerHTML = renderHoliday(); initHoliday(); break;
   }
 }
 
@@ -3538,6 +3572,203 @@ function refreshKnowledge() {
 }
 
 function initKnowledge() {}
+
+/* ==================== 8. 节日生日 ==================== */
+// 计算母亲节（5月第二个星期日）
+function getMothersDay(year) {
+  const d = new Date(year, 4, 1);
+  const dow = d.getDay();
+  const secondSun = 1 + ((7 - dow) % 7) + 7;
+  return `${year}-05-${String(secondSun).padStart(2,'0')}`;
+}
+// 计算父亲节（6月第三个星期日）
+function getFathersDay(year) {
+  const d = new Date(year, 5, 1);
+  const dow = d.getDay();
+  const thirdSun = 1 + ((7 - dow) % 7) + 14;
+  return `${year}-06-${String(thirdSun).padStart(2,'0')}`;
+}
+// 计算感恩节（11月第四个星期四）
+function getThanksgiving(year) {
+  const d = new Date(year, 10, 1);
+  const dow = d.getDay();
+  const fourthThu = 1 + ((4 - dow + 7) % 7) + 21;
+  return `${year}-11-${String(fourthThu).padStart(2,'0')}`;
+}
+// 农历节日近似（公历映射）
+function getLunarHolidays(year) {
+  // 这些是公历近似值，每年需微调
+  const lunarMap = {
+    2026: { chunjie: '2026-02-17', duanwu: '2026-06-19', zhongqiu: '2026-09-25' },
+    2027: { chunjie: '2027-02-06', duanwu: '2027-06-09', zhongqiu: '2027-09-15' },
+    2028: { chunjie: '2028-01-26', duanwu: '2028-05-28', zhongqiu: '2028-10-04' },
+    2029: { chunjie: '2029-02-13', duanwu: '2029-06-16', zhongqiu: '2029-09-22' },
+    2030: { chunjie: '2030-02-03', duanwu: '2030-06-05', zhongqiu: '2030-09-12' }
+  };
+  return lunarMap[year] || lunarMap[2026];
+}
+
+function getBuiltinHolidays() {
+  const year = new Date().getFullYear();
+  const lunar = getLunarHolidays(year);
+  return [
+    { id: 'holiday_chunjie', name: '春节', date: lunar.chunjie, icon: '🧧', type: 'festival', lunar: true },
+    { id: 'holiday_yuanxiao', name: '元宵节', date: `${year}-02-12`, icon: '🏮', type: 'festival' },
+    { id: 'holiday_qingming', name: '清明节', date: `${year}-04-05`, icon: '🌿', type: 'festival' },
+    { id: 'holiday_duanwu', name: '端午节', date: lunar.duanwu, icon: '🐲', type: 'festival', lunar: true },
+    { id: 'holiday_zhongqiu', name: '中秋节', date: lunar.zhongqiu, icon: '🥮', type: 'festival', lunar: true },
+    { id: 'holiday_guoqing', name: '国庆节', date: `${year}-10-01`, icon: '🇨🇳', type: 'festival' },
+    { id: 'holiday_yuandan', name: '元旦', date: `${year}-01-01`, icon: '🎆', type: 'festival' },
+    { id: 'holiday_laodong', name: '劳动节', date: `${year}-05-01`, icon: '💼', type: 'festival' },
+    { id: 'holiday_mothers', name: '母亲节', date: getMothersDay(year), icon: '🌸', type: 'festival' },
+    { id: 'holiday_fathers', name: '父亲节', date: getFathersDay(year), icon: '👨', type: 'festival' },
+    { id: 'holiday_qixi', name: '七夕', date: `${year}-08-29`, icon: '💕', type: 'festival' },
+    { id: 'holiday_chongyang', name: '重阳节', date: `${year}-10-29`, icon: '🍂', type: 'festival' },
+    { id: 'holiday_guoqing_2', name: '抗战胜利日', date: `${year}-09-03`, icon: '🕊️', type: 'festival' },
+    { id: 'holiday_jiaoshi', name: '教师节', date: `${year}-09-10`, icon: '👩‍🏫', type: 'festival' },
+    { id: 'holiday_christmas', name: '圣诞节', date: `${year}-12-25`, icon: '🎄', type: 'festival' },
+  ];
+}
+
+function getCustomHolidays() {
+  return Store.get('custom_holidays', []);
+}
+
+function getAllHolidays() {
+  const builtin = getBuiltinHolidays();
+  const custom = getCustomHolidays();
+  // 合并并按日期排序
+  return [...builtin, ...custom].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function renderHoliday() {
+  const all = getAllHolidays();
+  const today = todayStr();
+  const now = new Date();
+  const year = now.getFullYear();
+  
+  // 分组：已过、今天、未来
+  const past = [], upcoming = [];
+  let todayList = [];
+  all.forEach(h => {
+    if (h.date === today) todayList.push(h);
+    else if (h.date < today) past.push(h);
+    else upcoming.push(h);
+  });
+  
+  // 最近的5个
+  const next5 = upcoming.slice(0, 5);
+  // 今天的
+  const todayHtml = todayList.length > 0 ? `
+    <div class="card" style="background:linear-gradient(135deg,#FFF5F7,#F8EEFF);margin-bottom:16px">
+      <div class="card-title"><span class="card-title-icon">🎉</span>今天 · ${today} ${dayOfWeek(today)}</div>
+      ${todayList.map(h => `<div class="holiday-item today"><span class="holiday-icon">${h.icon}</span><span class="holiday-name">${escapeHtml(h.name)}</span>${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':''}</div>`).join('')}
+    </div>
+  ` : '';
+  
+  // 即将到来
+  const upcomingHtml = `
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span class="card-title-icon">📅</span>即将到来</div>
+      ${next5.length === 0 ? '<div class="empty-state"><div class="empty-state-text">今年暂无更多节日</div></div>' : ''}
+      ${next5.map(h => {
+        const daysLeft = Math.ceil((new Date(h.date) - now) / 86400000);
+        return `<div class="holiday-item">
+          <span class="holiday-icon">${h.icon}</span>
+          <div style="flex:1;min-width:0">
+            <div class="holiday-name">${escapeHtml(h.name)} ${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':''}</div>
+            <div class="holiday-date">${h.date} · ${dayOfWeek(h.date)} · 还有 ${daysLeft} 天</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+  
+  // 所有节日列表
+  const allHtml = `
+    <div class="card">
+      <div class="card-title"><span class="card-title-icon">📋</span>${year}年全部节日</div>
+      <div style="max-height:400px;overflow-y:auto">
+        ${all.map(h => `
+          <div class="holiday-item ${h.date===today?'today':''} ${h.date<today?'past':''}">
+            <span class="holiday-icon">${h.icon}</span>
+            <div style="flex:1;min-width:0">
+              <div class="holiday-name">${escapeHtml(h.name)} ${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':h.type==='festival'?'<span class="holiday-badge" style="background:#FFF0F5;color:#FF7FA0">节假日</span>':''}</div>
+              <div class="holiday-date">${h.date} · ${dayOfWeek(h.date)} ${h.date===today?'· 🎉 今天！':h.date<today?'· ✅ 已过':''}</div>
+            </div>
+            ${h.type === 'birthday' ? `<button class="btn-icon btn-danger" onclick="deleteCustomHoliday('${h.id}')">🗑</button>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  return `
+    <div class="page-header">
+      <div>
+        <h1 class="page-title"><span class="page-title-icon">🎂</span>节日生日</h1>
+        <div class="page-desc">记住每一个重要的日子</div>
+      </div>
+      <button class="btn btn-primary" onclick="showAddHolidayModal()">+ 添加生日</button>
+    </div>
+    <div class="page-content">
+      ${todayHtml}
+      ${upcomingHtml}
+      ${allHtml}
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-light)">
+        💡 节假日自动更新 · 生日可自定义添加
+      </div>
+    </div>
+  `;
+}
+
+function showAddHolidayModal() {
+  showModal({
+    title: '🎂 添加生日/纪念日',
+    body: `
+      <div class="form-group">
+        <label class="form-label">名称</label>
+        <input type="text" class="input" id="holidayNameInput" placeholder="如：妈妈生日、闺蜜生日" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label class="form-label">日期（每年重复）</label>
+        <input type="date" class="input" id="holidayDateInput">
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px">只需选月日，每年自动提醒</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">图标（选填）</label>
+        <input type="text" class="input" id="holidayIconInput" placeholder="如：🎂🎁❤️" maxlength="4" value="🎂">
+      </div>
+    `,
+    onConfirm: () => {
+      const name = document.getElementById('holidayNameInput').value.trim();
+      const dateVal = document.getElementById('holidayDateInput').value;
+      const icon = document.getElementById('holidayIconInput').value.trim() || '🎂';
+      if (!name) { toast('请输入名称'); return false; }
+      if (!dateVal) { toast('请选择日期'); return false; }
+      const customs = getCustomHolidays();
+      // 只取月日，年用当前年
+      const md = dateVal.slice(5);
+      const year = new Date().getFullYear();
+      customs.push({ id: uid(), name, date: `${year}-${md}`, icon, type: 'birthday', monthDay: md });
+      Store.set('custom_holidays', customs);
+      renderPage('holiday');
+      toast('已添加');
+      return true;
+    }
+  });
+}
+
+function deleteCustomHoliday(id) {
+  showConfirm('确定删除？', () => {
+    const customs = getCustomHolidays().filter(h => h.id !== id);
+    Store.set('custom_holidays', customs);
+    renderPage('holiday');
+    toast('已删除');
+  });
+}
+
+function initHoliday() {}
 
 function switchFinanceType(type) {
   currentFinanceType = type;
