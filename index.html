@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="36">
+<meta name="build-version" content="37">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '36';
+  var CURRENT_VERSION = '37';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -36,7 +36,7 @@ if ('serviceWorker' in navigator) {
 </script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="海绵饱饱">
-<meta name="theme-color" content="#FFB6C1">
+<meta name="theme-color" content="#333333">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/svg+xml" href="icon.svg" id="faviconLink">
 <link rel="apple-touch-icon" href="icon.svg" id="appleIconLink">
@@ -86,22 +86,22 @@ if ('serviceWorker' in navigator) {
 <style>
 /* ==================== 全局变量与重置 ==================== */
 :root {
-  --primary: #FF9FB5;
-  --primary-dark: #FF7FA0;
-  --primary-light: #FFD4DD;
-  --primary-bg: #FFF5F7;
-  --secondary: #B5A8FF;
-  --accent: #8FE3D0;
+  --primary: #333333;
+  --primary-dark: #1A1A1A;
+  --primary-light: #E8E8E8;
+  --primary-bg: #F8F8F8;
+  --secondary: #666666;
+  --accent: #888888;
   --warning: #FFD166;
-  --danger: #FF8C94;
-  --success: #6BCB77;
-  --text-main: #2D1F1A;
-  --text-sub: #5C4A42;
-  --text-light: #8A786E;
+  --danger: #E05555;
+  --success: #5BAA6A;
+  --text-main: #1A1A1A;
+  --text-sub: #555555;
+  --text-light: #999999;
   --bg-main: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-hover: #FAFAFA;
-  --border: #EEEEEE;
+  --bg-hover: #F5F5F5;
+  --border: #E5E5E5;
   --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.1);
   --radius: 14px;
@@ -150,7 +150,7 @@ button { cursor: pointer; }
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
-  background: linear-gradient(180deg, #FFF5F8 0%, #FFF0F5 100%);
+  background: #FAFAFA;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -160,7 +160,7 @@ button { cursor: pointer; }
 
 .sidebar-header {
   padding: 20px 16px 16px;
-  border-bottom: 1px solid rgba(255, 159, 181, 0.15);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -170,7 +170,7 @@ button { cursor: pointer; }
   width: 56px;
   height: 56px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(135deg, #4A4A4A, #2D2D2D);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -179,7 +179,7 @@ button { cursor: pointer; }
   font-size: 32px;
   flex-shrink: 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(255, 159, 181, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: transform .2s;
   position: relative;
   overflow: hidden;
@@ -232,7 +232,7 @@ button { cursor: pointer; }
   flex-shrink: 0;
   transition: all .2s;
 }
-.sidebar-edit-btn:active { background: rgba(255,159,181,.2); color: var(--primary-dark); }
+.sidebar-edit-btn:active { background: var(--bg-hover); color: var(--primary); }
 
 .nav-list {
   flex: 1;
@@ -250,18 +250,18 @@ button { cursor: pointer; }
   cursor: pointer;
   transition: all .2s ease;
   margin-bottom: 4px;
-  color: #4A3548;
+  color: #333;
   font-weight: 600;
   font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   position: relative;
 }
 
-.nav-item:hover { background: rgba(255, 159, 181, 0.1); }
+.nav-item:hover { background: var(--bg-hover); }
 
 .nav-item.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(135deg, #333, #1A1A1A);
   color: #fff;
-  box-shadow: 0 3px 10px rgba(255, 127, 160, 0.35);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .nav-icon {
@@ -280,7 +280,7 @@ button { cursor: pointer; }
 
 .sidebar-footer {
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
-  border-top: 1px solid rgba(255, 159, 181, 0.15);
+  border-top: 1px solid var(--border);
   font-size: 11px;
   color: var(--text-light);
   text-align: center;
@@ -301,7 +301,7 @@ button { cursor: pointer; }
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 
 .sidebar-overlay {
@@ -402,7 +402,7 @@ button { cursor: pointer; }
 
 .btn-ghost {
   background: var(--primary-bg);
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 .btn-ghost:active { background: var(--primary-light); }
 
@@ -412,7 +412,7 @@ button { cursor: pointer; }
   padding: 0;
   border-radius: 10px;
   background: var(--primary-bg);
-  color: var(--primary-dark);
+  color: var(--primary);
   font-size: 16px;
   display: inline-flex;
   align-items: center;
@@ -451,7 +451,7 @@ button { cursor: pointer; }
   font-size: 12px;
   font-weight: 600;
 }
-.tag-pink { background: var(--primary-bg); color: var(--primary-dark); }
+.tag-pink { background: #F0F0F0; color: #333; }
 .tag-purple { background: rgba(181,168,255,.15); color: #7A6AD9; }
 .tag-green { background: rgba(143,227,208,.2); color: #4FA897; }
 .tag-orange { background: rgba(255,209,102,.2); color: #C99A2E; }
@@ -524,7 +524,7 @@ button { cursor: pointer; }
 
 .learn-link {
   font-size: 12px;
-  color: var(--primary-dark);
+  color: var(--primary);
   text-decoration: none;
   font-weight: 600;
   display: inline-flex;
@@ -538,7 +538,7 @@ button { cursor: pointer; }
 .learn-tip {
   margin-top: 8px;
   padding: 12px;
-  background: linear-gradient(135deg, #FFF5F7, #F0EAFF);
+  background: linear-gradient(135deg, #F8F8F8, #F0F0F0);
   border-radius: var(--radius-sm);
   font-size: 13px;
   color: var(--text-sub);
@@ -552,7 +552,7 @@ button { cursor: pointer; }
 /* ==================== 每日打卡 ==================== */
 .checkin-progress {
   margin-bottom: 18px;
-  background: linear-gradient(135deg, #FFF5F7, #F8EEFF);
+  background: linear-gradient(135deg, #F8F8F8, #EEEEEE);
   padding: 18px;
   border-radius: var(--radius);
 }
@@ -568,7 +568,7 @@ button { cursor: pointer; }
 .progress-percent-text {
   font-size: 14px;
   font-weight: 700;
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 
 .progress-bar-track {
@@ -581,7 +581,7 @@ button { cursor: pointer; }
 }
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #FF9FB5, #B5A8FF);
+  background: linear-gradient(90deg, #555, #888);
   border-radius: 3px;
   transition: width .5s ease;
 }
@@ -594,7 +594,7 @@ button { cursor: pointer; }
   background: rgba(255,159,181,.12);
   border-radius: var(--radius-sm);
   font-size: 15px;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 600;
   text-align: center;
   line-height: 1.6;
@@ -863,11 +863,11 @@ button { cursor: pointer; }
   padding: 2px 8px;
   border-radius: 12px;
   background: var(--primary-bg);
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 
 .auto-collect-info {
-  background: linear-gradient(135deg, #FFF5F7, #F0EAFF);
+  background: linear-gradient(135deg, #F8F8F8, #F0F0F0);
   padding: 12px 14px;
   border-radius: var(--radius-sm);
   font-size: 13px;
@@ -920,7 +920,7 @@ button { cursor: pointer; }
 }
 .idea-link a {
   font-size: 12px;
-  color: var(--primary-dark);
+  color: var(--primary);
   text-decoration: none;
   word-break: break-all;
 }
@@ -951,7 +951,7 @@ button { cursor: pointer; }
 .stat-value {
   font-size: 22px;
   font-weight: 700;
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 .stat-value .unit { font-size: 12px; font-weight: 400; }
 
@@ -1060,7 +1060,7 @@ button { cursor: pointer; }
 }
 
 .summary-card.income { background: linear-gradient(135deg, #6BCB77, #4FA859); }
-.summary-card.expense { background: linear-gradient(135deg, #FF8C94, #FF6B7A); }
+.summary-card.expense { background: linear-gradient(135deg, #555, #444); }
 .summary-card.extra { background: linear-gradient(135deg, #B5A8FF, #8E7FE8); }
 
 .summary-label { font-size: 12px; opacity: .9; margin-bottom: 4px; }
@@ -1299,7 +1299,7 @@ button { cursor: pointer; }
 .install-banner-text b { font-size: 14px; }
 .install-banner-btn {
   background: #fff;
-  color: var(--primary-dark);
+  color: var(--primary);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 13px;
@@ -1329,7 +1329,7 @@ button { cursor: pointer; }
     max-width: 62px;
     transform: none;
     flex-shrink: 0;
-    background: linear-gradient(180deg, #FFF5F8 0%, #FFF0F5 100%);
+    background: linear-gradient(180deg, #FAFAFA 0%, #F5F5F5 100%);
     border-right: 1px solid var(--border);
     border-bottom: none;
     padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
@@ -1528,7 +1528,7 @@ button { cursor: pointer; }
   padding: 2px 8px;
   border-radius: 10px;
   background: var(--primary-bg);
-  color: var(--primary-dark);
+  color: var(--primary);
 }
 .podcast-play {
   font-size: 22px;
@@ -1583,7 +1583,7 @@ button { cursor: pointer; }
   padding: 3px 10px;
   border-radius: 12px;
   background: var(--primary-bg);
-  color: var(--primary-dark);
+  color: var(--primary);
   display: inline-block;
 }
 
@@ -1597,7 +1597,7 @@ button { cursor: pointer; }
 }
 .holiday-item:last-child { border-bottom: none; }
 .holiday-item.today {
-  background: linear-gradient(135deg, #FFF5F7, #F8EEFF);
+  background: linear-gradient(135deg, #F8F8F8, #EEEEEE);
   margin: 0 -14px;
   padding: 12px 14px;
   border-radius: var(--radius-sm);
@@ -1611,8 +1611,8 @@ button { cursor: pointer; }
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 10px;
-  background: #FFF0F5;
-  color: #FF7FA0;
+  background: #F5F5F5;
+  color: #555;
   margin-left: 6px;
   vertical-align: middle;
 }
@@ -1624,8 +1624,8 @@ button { cursor: pointer; }
 <svg class="svg-defs">
   <defs>
     <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF9FB5"/>
-      <stop offset="100%" stop-color="#B5A8FF"/>
+      <stop offset="0%" stop-color="#555"/>
+      <stop offset="100%" stop-color="#888"/>
     </linearGradient>
   </defs>
 </svg>
@@ -1966,7 +1966,7 @@ function renderCheckin() {
         </div>
       </div>
       ${taskListHtml}
-      <div style="text-align:center;margin-top:16px;padding:12px;background:linear-gradient(135deg,#FFF5F7,#F0EAFF);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
+      <div style="text-align:center;margin-top:16px;padding:12px;background:linear-gradient(135deg,#F8F8F8,#F0F0F0);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
         📚 <a href="javascript:void(0)" onclick="switchPage('learn')" style="color:var(--primary-dark);font-weight:600;text-decoration:underline">查看今日学习推荐 →</a>
       </div>
     </div>
@@ -2855,8 +2855,8 @@ function renderWeightChart(records) {
     <svg class="weight-chart" viewBox="0 0 ${w} ${h}" style="width:100%;max-width:400px;display:block;margin:0 auto">
       <defs>
         <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#FF9FB5" stop-opacity="0.3"/>
-          <stop offset="100%" stop-color="#FF9FB5" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#555" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#555" stop-opacity="0"/>
         </linearGradient>
       </defs>
       ${yLabels.map((v, i) => {
@@ -2865,8 +2865,8 @@ function renderWeightChart(records) {
         <text x="${pad.l-5}" y="${y+3}" font-size="9" fill="#B5A8C4" text-anchor="end">${v}</text>`;
       }).join('')}
       <path d="${areaD}" fill="url(#areaGrad)"/>
-      <path d="${pathD}" fill="none" stroke="#FF7FA0" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#fff" stroke="#FF7FA0" stroke-width="2"/>`).join('')}
+      <path d="${pathD}" fill="none" stroke="#555" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#fff" stroke="#555" stroke-width="2"/>`).join('')}
       ${points.map((p, i) => {
         if (records.length > 8 && i % 2 !== 0) return '';
         return `<text x="${p.x}" y="${h-8}" font-size="8" fill="#B5A8C4" text-anchor="middle">${p.date.slice(5)}</text>`;
@@ -3138,7 +3138,7 @@ function renderFlow() {
         <div class="summary-card expense"><div class="summary-label">每日支出</div><div class="summary-amount">${totalExpense.toFixed(2)}<span class="unit">元</span></div><div class="summary-icon">🛍</div></div>
         <div class="summary-card extra"><div class="summary-label">额外收入</div><div class="summary-amount">${totalExtra.toFixed(2)}<span class="unit">元</span></div><div class="summary-icon">✨</div></div>
       </div>
-      <div class="card" style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#FFF5F7,#F0EAFF)">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#F8F8F8,#F0F0F0)">
         <div>
           <div style="font-size:13px;color:var(--text-sub)">本月结余 · 净资产 ${netWorth>=0?'+':''}${netWorth.toFixed(0)}</div>
           <div style="font-size:24px;font-weight:700;color:${balance>=0?'var(--success)':'var(--danger)'}">${balance>=0?'+':''}${balance.toFixed(2)} <span style="font-size:14px;font-weight:400">元</span></div>
@@ -3274,7 +3274,7 @@ function renderDebts() {
             <span class="progress-percent-text">${debtPercent}%</span>
           </div>
           <div class="progress-bar-track">
-            <div class="progress-bar-fill" style="width:${debtPercent}%;background:linear-gradient(90deg,#FF8C94,#FF9FB5)"></div>
+            <div class="progress-bar-fill" style="width:${debtPercent}%;background:linear-gradient(90deg,#555,#888)"></div>
           </div>
           <p>${debtPercent===100?'🎉 本月全部还清！' : debtPercent>=50?'💪 已完成过半' : '📌 记得按时还款哦'}</p>
           <div class="progress-date">总额 ${totalDebts.toFixed(2)} 元</div>
@@ -3761,7 +3761,7 @@ function renderHoliday() {
   const next5 = upcoming.slice(0, 5);
   // 今天的
   const todayHtml = todayList.length > 0 ? `
-    <div class="card" style="background:linear-gradient(135deg,#FFF5F7,#F8EEFF);margin-bottom:16px">
+    <div class="card" style="background:linear-gradient(135deg,#F8F8F8,#EEEEEE);margin-bottom:16px">
       <div class="card-title"><span class="card-title-icon">🎉</span>今天 · ${today} ${dayOfWeek(today)}</div>
       ${todayList.map(h => `<div class="holiday-item today"><span class="holiday-icon">${h.icon}</span><span class="holiday-name">${escapeHtml(h.name)}</span>${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':''}</div>`).join('')}
     </div>
@@ -3794,7 +3794,7 @@ function renderHoliday() {
           <div class="holiday-item ${h.date===today?'today':''} ${h.date<today?'past':''}">
             <span class="holiday-icon">${h.icon}</span>
             <div style="flex:1;min-width:0">
-              <div class="holiday-name">${escapeHtml(h.name)} ${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':h.type==='festival'?'<span class="holiday-badge" style="background:#FFF0F5;color:#FF7FA0">节假日</span>':''}</div>
+              <div class="holiday-name">${escapeHtml(h.name)} ${h.type==='birthday'?'<span class="holiday-badge">🎂生日</span>':h.type==='festival'?'<span class="holiday-badge" style="background:#F0F0F0;color:#555">节假日</span>':''}</div>
               <div class="holiday-date">${h.date} · ${dayOfWeek(h.date)} ${h.date===today?'· 🎉 今天！':h.date<today?'· ✅ 已过':''}</div>
             </div>
             ${h.type === 'birthday' ? `<button class="btn-icon btn-danger" onclick="deleteCustomHoliday('${h.id}')">🗑</button>` : ''}
@@ -4359,8 +4359,8 @@ function updateDesktopIcon() {
   
   // 渐变背景
   const grad = ctx.createLinearGradient(0, 0, 192, 192);
-  grad.addColorStop(0, '#FF9FB5');
-  grad.addColorStop(1, '#B5A8FF');
+  grad.addColorStop(0, '#555');
+  grad.addColorStop(1, '#888');
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.roundRect(0, 0, 192, 192, 36);
