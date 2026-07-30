@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="21">
+<meta name="build-version" content="22">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '21';
+  var CURRENT_VERSION = '22';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -583,6 +583,17 @@ button { cursor: pointer; }
 
 .progress-info-full p { font-size: 13px; color: var(--text-sub); margin-bottom: 4px; }
 .progress-date { font-size: 12px; color: var(--text-light); }
+.daily-motto {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(255,159,181,.12);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--primary-dark);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.5;
+}
 
 .checkin-item {
   display: flex;
@@ -1873,6 +1884,33 @@ function renderCheckin() {
   const total = tasks.length;
   const done = checked.length;
   const percent = total > 0 ? Math.round(done / total * 100) : 0;
+  
+  // 每日励志文案
+  const MOTTO_BANK = [
+    '你今天的努力，是明天惊喜的铺垫 ✨',
+    '不要等待机会，而要创造机会 💪',
+    '每一个不曾起舞的日子，都是对生命的辜负 🦋',
+    '慢慢来，比较快。稳扎稳打才是最快的捷径 🐢',
+    '今天比昨天好，就是希望 🌱',
+    '做你自己，因为别人都有人做了 🌟',
+    '你所做的事情，也许暂时看不到成果，但不要灰心，你不是没有成长，而是在扎根 🌳',
+    '生活不会辜负每一个努力的人，加油！🔥',
+    '种一棵树最好的时间是十年前，其次是现在 🌲',
+    '自律给你自由，坚持给你答案 🗝️',
+    '哪怕只进步一点点，也比原地踏步好 🚶‍♀️',
+    '不必仰望别人，自己亦是风景 🌄',
+    '那些看似不起波澜的日复一日，会突然在某天让人看到坚持的意义 💎',
+    '发光不是太阳的权利，你也可以 ☀️',
+    '你要悄悄努力，然后惊艳所有人 🎀',
+    '没有白走的路，每一步都算数 👣',
+    '与其追光，不如成为光 💡',
+    '你的时间花在哪里，人生的花就开在哪里 🌸',
+    '把简单的事情做到极致，就是不简单 🏆',
+    '今天也是闪闪发光的一天呀 ✨'
+  ];
+  const today = todayStr();
+  const mottoSeed = parseInt(today.split('-').join('')) % MOTTO_BANK.length;
+  const dailyMotto = MOTTO_BANK[mottoSeed];
   const circumference = 2 * Math.PI * 30;
   const offset = circumference - (percent / 100) * circumference;
   
@@ -1915,6 +1953,7 @@ function renderCheckin() {
           </div>
           <p>${percent === 100 ? '🎉 全部完成！太棒了！' : percent >= 50 ? '💪 继续加油，快完成了' : '🌟 开始今天的打卡吧'}</p>
           <div class="progress-date">${todayStr()} ${dayOfWeek(todayStr())}</div>
+          <div class="daily-motto">💬 ${escapeHtml(dailyMotto)}</div>
         </div>
       </div>
       ${taskListHtml}
