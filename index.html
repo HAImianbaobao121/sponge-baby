@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="50">
+<meta name="build-version" content="51">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '50';
+  var CURRENT_VERSION = '51';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -3591,7 +3591,7 @@ function renderPodcast() {
   }
   
   const podcastCards = podcastList.map(p => `
-    <div class="podcast-card" onclick="openPodcast('${p.url}')">
+    <div class="podcast-card" onclick="openPodcast('${p.url}', '${escapeHtml(p.title).replace(/'/g, "\\'")}')">
       <div class="podcast-icon">${p.icon}</div>
       <div class="podcast-info">
         <div class="podcast-title">${escapeHtml(p.title)}</div>
@@ -3613,7 +3613,7 @@ function renderPodcast() {
     </div>
     <div class="page-content">
       <!-- 今日推荐 -->
-      <div class="podcast-featured" onclick="openPodcast('${featured.url}')">
+      <div class="podcast-featured" onclick="openPodcast('${featured.url}', '${escapeHtml(featured.title).replace(/'/g, "\\'")}')">
         <div class="podcast-featured-badge">🌟 今日推荐</div>
         <div class="podcast-featured-icon">${featured.icon}</div>
         <div class="podcast-featured-title">${escapeHtml(featured.title)}</div>
@@ -3630,21 +3630,21 @@ function renderPodcast() {
       ${podcastCards}
       
       <div style="text-align:center;margin-top:20px;padding:16px;background:var(--bg-card);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
-        💡 点击播客卡片会<strong>自动复制链接</strong>并尝试打开小宇宙App<br>
-        如未自动跳转，请打开小宇宙App粘贴链接收听<br>
-        没安装小宇宙？可在App Store搜索下载
+        💡 点击播客会<strong>复制播客名称</strong>并尝试打开小宇宙<br>
+        如果自动打开失败，请手动打开小宇宙App，粘贴名称搜索收听
       </div>
     </div>
   `;
 }
 
 function openPodcast(url, title) {
-  // 复制链接到剪贴板
-  copyToClipboard(url);
-  toast('链接已复制～正在打开小宇宙...');
-  // 尝试用 a 标签跳转，兼容 PWA
+  // 复制播客名称，方便用户到小宇宙App内搜索
+  copyToClipboard(title);
+  toast('已复制「' + title + '」，请打开小宇宙App搜索收听～');
+  // 同时尝试打开小宇宙搜索链接
+  var searchUrl = 'https://www.xiaoyuzhoufm.com/search?q=' + encodeURIComponent(title);
   var a = document.createElement('a');
-  a.href = url;
+  a.href = searchUrl;
   a.target = '_blank';
   a.rel = 'noopener';
   document.body.appendChild(a);
