@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="53">
+<meta name="build-version" content="54">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '53';
+  var CURRENT_VERSION = '54';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1501,32 +1501,33 @@ button { cursor: pointer; }
 
 /* ==================== 播客 ==================== */
 .podcast-featured {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #7DCE8C 0%, #5DBE6F 100%);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 16px;
   color: #fff;
   text-align: center;
   cursor: pointer;
   transition: transform .15s;
 }
-.podcast-featured:active { transform: scale(.98); }
+.podcast-featured:active { transform: scale(.97); }
 .podcast-featured-badge {
   display: inline-block;
   background: rgba(255,255,255,.25);
-  padding: 4px 14px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 16px;
+  font-size: 11px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
-.podcast-featured-icon { font-size: 48px; margin-bottom: 10px; }
+.podcast-featured-icon { font-size: 32px; margin-bottom: 6px; }
 .podcast-featured-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 6px;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", sans-serif;
+  margin-bottom: 4px;
 }
-.podcast-featured-author { font-size: 14px; opacity: .85; margin-bottom: 8px; }
-.podcast-featured-desc { font-size: 13px; opacity: .75; line-height: 1.5; }
+.podcast-featured-author { font-size: 12px; opacity: .85; margin-bottom: 4px; }
+.podcast-featured-desc { font-size: 12px; opacity: .75; line-height: 1.5; }
 
 .podcast-card {
   display: flex;
@@ -3619,7 +3620,7 @@ function renderPodcast() {
         <div class="podcast-featured-title">${escapeHtml(featured.title)}</div>
         <div class="podcast-featured-author">${escapeHtml(featured.author)}</div>
         <div class="podcast-featured-desc">${escapeHtml(featured.desc)}</div>
-        <button class="btn btn-primary" style="margin-top:10px">▶ 开始收听</button>
+        <button class="btn btn-primary" style="margin-top:8px;padding:6px 16px;font-size:13px">▶ 开始收听</button>
       </div>
       
       <!-- 播客列表 -->
