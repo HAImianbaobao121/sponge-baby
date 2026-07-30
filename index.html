@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="24">
+<meta name="build-version" content="25">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '24';
+  var CURRENT_VERSION = '25';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -1913,6 +1913,46 @@ function renderCheckin() {
   const today = todayStr();
   const mottoSeed = parseInt(today.split('-').join('')) % MOTTO_BANK.length;
   const dailyMotto = MOTTO_BANK[mottoSeed];
+  
+  // 学习内容推荐 - 可刷新
+  const LEARN_ENGLISH = [
+    { platform: 'bilibili', title: 'A路人 · 零基础英语入门', desc: 'B站零基础英语顶流UP主，讲解风趣幽默，从音标到日常口语全覆盖', link: 'https://search.bilibili.com/all?keyword=A路人%20零基础英语' },
+    { platform: 'bilibili', title: '英语兔 · 发音纠正', desc: '专注英语发音教学，动画讲解生动易懂，适合新手纠正中式发音', link: 'https://search.bilibili.com/all?keyword=英语兔%20发音' },
+    { platform: 'douyin', title: '英语雪梨老师 · 每日一句', desc: '抖音英语教学头部博主，每天一句实用口语，碎片时间跟读练习', link: 'https://www.douyin.com/search/英语雪梨老师%20每日英语' },
+    { platform: 'bilibili', title: '瑞秋英语Rachel · 美式发音', desc: '美国外教纯正美式发音，从音标到连读全面教学，适合想练口语的', link: 'https://search.bilibili.com/all?keyword=Rachel%20英语发音' },
+    { platform: 'douyin', title: '杨亮讲英文 · 单词速记', desc: '词根词缀法记单词，每天学5个词根，词汇量翻倍不是梦', link: 'https://www.douyin.com/search/杨亮讲英文' },
+    { platform: 'bilibili', title: '老友记学英语 · 情景对话', desc: '用经典美剧《老友记》学日常口语，边看剧边学英语超轻松', link: 'https://search.bilibili.com/all?keyword=老友记%20学英语' }
+  ];
+  const LEARN_KOREAN = [
+    { platform: 'bilibili', title: '韩语养乐多老师 · 零基础发音', desc: 'B站韩语顶流UP主，发音教学超详细，从四十音到基础会话，新手首选', link: 'https://search.bilibili.com/all?keyword=韩语养乐多老师%20零基础' },
+    { platform: 'bilibili', title: '韩语零基础全套 · 398集', desc: '目前B站最全韩语教程，发音+语法+对话，每天30分钟系统学习', link: 'https://www.bilibili.com/video/BV1rCTr6zEU2/' },
+    { platform: 'douyin', title: '韩语老师金美英 · 每日韩语', desc: '抖音韩语教学热门博主，每天教一句地道韩语，发音标准适合跟读', link: 'https://www.douyin.com/search/韩语老师金美英%20每日韩语' },
+    { platform: 'bilibili', title: 'TalkToMeInKorean · 地道韩语', desc: '韩国人教的韩语课程，从初级到高级系统全面，国际知名韩语教学品牌', link: 'https://search.bilibili.com/all?keyword=TalkToMeInKorean' },
+    { platform: 'douyin', title: '韩语小课堂 · 追剧学韩语', desc: '用热门韩剧台词学韩语，边追剧边学，轻松记住日常表达', link: 'https://www.douyin.com/search/追剧学韩语' },
+    { platform: 'bilibili', title: '韩语语法大全 · 一学就会', desc: '把复杂的韩语语法拆解成简单易懂的规则，搭配例句和练习', link: 'https://search.bilibili.com/all?keyword=韩语语法%20入门' }
+  ];
+  
+  // 基于日期随机选取
+  var learnSeed = parseInt(today.split('-').join(''));
+  var enShuffled = LEARN_ENGLISH.slice().sort(function() { return 0.5 - Math.random(); });
+  var krShuffled = LEARN_KOREAN.slice().sort(function() { return 0.5 - Math.random(); });
+  var pickedEn = enShuffled.slice(0, 3);
+  var pickedKr = krShuffled.slice(0, 3);
+  
+  // 检查是否有手动刷新
+  var learnRefresh = Store.get('learn_refresh', '');
+  if (learnRefresh === today) {
+    pickedEn = enShuffled.slice(0, 3);
+    pickedKr = krShuffled.slice(0, 3);
+  }
+  
+  var enCards = pickedEn.map(function(c) {
+    return '<div class="learn-card"><div class="learn-platform ' + c.platform + '">' + (c.platform === 'bilibili' ? 'B站' : '抖音') + '</div><div class="learn-title">' + c.title + '</div><div class="learn-desc">' + c.desc + '</div><a class="learn-link" href="' + c.link + '" target="_blank" rel="noopener">👉 去' + (c.platform === 'bilibili' ? 'B站' : '抖音') + '搜索学习</a></div>';
+  }).join('');
+  
+  var krCards = pickedKr.map(function(c) {
+    return '<div class="learn-card"><div class="learn-platform ' + c.platform + '">' + (c.platform === 'bilibili' ? 'B站' : '抖音') + '</div><div class="learn-title">' + c.title + '</div><div class="learn-desc">' + c.desc + '</div><a class="learn-link" href="' + c.link + '" target="_blank" rel="noopener">👉 去' + (c.platform === 'bilibili' ? 'B站' : '抖音') + '搜索学习</a></div>';
+  }).join('');
   const circumference = 2 * Math.PI * 30;
   const offset = circumference - (percent / 100) * circumference;
   
@@ -1960,53 +2000,18 @@ function renderCheckin() {
       </div>
       ${taskListHtml}
       <div class="card" style="margin-top:20px">
-        <div class="card-title"><span class="card-title-icon">📚</span>今日学习内容推荐</div>
+        <div class="card-title">
+          <span class="card-title-icon">📚</span>今日学习内容推荐
+          <a href="javascript:void(0)" onclick="refreshLearnContent()" style="margin-left:auto;font-size:13px;color:var(--primary-dark);text-decoration:none;font-weight:600">🔄 换一批</a>
+        </div>
         <div style="font-size:13px;color:var(--text-sub);margin-bottom:14px">来自 B站/抖音 的新手友好教程，每天跟着学</div>
         <div class="learn-section">
           <div class="learn-subtitle">🇬🇧 英语 · 零基础入门</div>
-          <div class="learn-cards">
-            <div class="learn-card">
-              <div class="learn-platform bilibili">B站</div>
-              <div class="learn-title">A路人 · 零基础英语入门</div>
-              <div class="learn-desc">B站零基础英语顶流UP主，讲解风趣幽默，从音标到日常口语全覆盖，每天30分钟刚好学一节</div>
-              <a class="learn-link" href="https://search.bilibili.com/all?keyword=A路人%20零基础英语" target="_blank" rel="noopener">👉 去B站搜索学习</a>
-            </div>
-            <div class="learn-card">
-              <div class="learn-platform bilibili">B站</div>
-              <div class="learn-title">英语兔 · 发音纠正</div>
-              <div class="learn-desc">专注英语发音教学，动画讲解生动易懂，适合新手纠正中式发音，打好口语基础</div>
-              <a class="learn-link" href="https://search.bilibili.com/all?keyword=英语兔%20发音" target="_blank" rel="noopener">👉 去B站搜索学习</a>
-            </div>
-            <div class="learn-card">
-              <div class="learn-platform douyin">抖音</div>
-              <div class="learn-title">英语雪梨老师 · 每日一句</div>
-              <div class="learn-desc">抖音英语教学头部博主，每天一句实用口语，短小精悍，适合碎片时间跟读练习</div>
-              <a class="learn-link" href="https://www.douyin.com/search/英语雪梨老师%20每日英语" target="_blank" rel="noopener">👉 去抖音搜索学习</a>
-            </div>
-          </div>
+          <div class="learn-cards">${enCards}</div>
         </div>
         <div class="learn-section">
           <div class="learn-subtitle">🇰🇷 韩语 · 零基础入门</div>
-          <div class="learn-cards">
-            <div class="learn-card">
-              <div class="learn-platform bilibili">B站</div>
-              <div class="learn-title">韩语养乐多老师 · 零基础发音</div>
-              <div class="learn-desc">B站韩语顶流UP主（300万+粉丝），发音教学超详细，从四十音到基础会话，新手首选</div>
-              <a class="learn-link" href="https://search.bilibili.com/all?keyword=韩语养乐多老师%20零基础" target="_blank" rel="noopener">👉 去B站搜索学习</a>
-            </div>
-            <div class="learn-card">
-              <div class="learn-platform bilibili">B站</div>
-              <div class="learn-title">韩语零基础全套 · 398集</div>
-              <div class="learn-desc">目前B站最全韩语教程（发音+语法+对话），7天入门到精通，每天30分钟系统学习</div>
-              <a class="learn-link" href="https://www.bilibili.com/video/BV1rCTr6zEU2/" target="_blank" rel="noopener">👉 直接观看教程</a>
-            </div>
-            <div class="learn-card">
-              <div class="learn-platform douyin">抖音</div>
-              <div class="learn-title">韩语老师金美英 · 每日韩语</div>
-              <div class="learn-desc">抖音韩语教学热门博主，每天教一句地道韩语，发音标准，适合跟读模仿培养语感</div>
-              <a class="learn-link" href="https://www.douyin.com/search/韩语老师金美英%20每日韩语" target="_blank" rel="noopener">👉 去抖音搜索学习</a>
-            </div>
-          </div>
+          <div class="learn-cards">${krCards}</div>
         </div>
         <div class="learn-tip">
           💡 <b>学习建议：</b>英语/韩语各选一个UP主坚持每天30分钟，配合打卡记录进度，效果翻倍！
@@ -2017,11 +2022,16 @@ function renderCheckin() {
 }
 
 function initCheckin() {
-  // 请求通知权限
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
   }
   scheduleNotifications();
+}
+
+function refreshLearnContent() {
+  Store.set('learn_refresh', todayStr());
+  renderPage('checkin');
+  toast('已刷新学习内容');
 }
 
 // 定时提醒
