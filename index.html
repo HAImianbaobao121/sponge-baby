@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="10">
+<meta name="build-version" content="11">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '10';
+  var CURRENT_VERSION = '11';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -2602,7 +2602,7 @@ function renderWeight() {
   } else {
     tableHtml = `
       <table class="weight-table">
-        <thead><tr><th>日期</th><th>星期</th><th>体重(kg)</th><th>变化</th><th></th></tr></thead>
+        <thead><tr><th>日期</th><th>星期</th><th>体重(kg)</th><th>斤</th><th>变化</th><th></th></tr></thead>
         <tbody>
           ${monthRecords.map((r, idx) => {
             const prev = monthRecords[idx + 1];
@@ -2617,6 +2617,7 @@ function renderWeight() {
               <td>${r.date.slice(5)}</td>
               <td style="color:var(--text-light)">${dayOfWeek(r.date)}</td>
               <td><b>${r.weight}</b></td>
+              <td style="color:var(--text-sub)">${(r.weight * 2).toFixed(1)}斤</td>
               <td>${change}</td>
               <td><button class="btn-icon btn-danger" style="width:24px;height:24px;font-size:12px" onclick="deleteWeight('${r.id}')">🗑</button></td>
             </tr>`;
@@ -2658,15 +2659,17 @@ function renderWeight() {
         <div class="stat-card">
           <div class="stat-label">今日体重</div>
           <div class="stat-value">${latest ? latest.weight : '—'}<span class="unit">kg</span></div>
-          <div class="stat-trend ${diffClass}">${diffText}</div>
+          <div class="stat-trend ${diffClass}">${diffText}${latest ? ' · ' + (latest.weight * 2).toFixed(1) + '斤' : ''}</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">本月最高</div>
           <div class="stat-value">${maxW || '—'}<span class="unit">kg</span></div>
+          <div style="font-size:12px;color:var(--text-light)">${maxW ? (maxW * 2).toFixed(1) + '斤' : ''}</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">本月最低</div>
           <div class="stat-value">${minW || '—'}<span class="unit">kg</span></div>
+          <div style="font-size:12px;color:var(--text-light)">${minW ? (minW * 2).toFixed(1) + '斤' : ''}</div>
         </div>
       </div>
       
