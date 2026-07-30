@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="45">
+<meta name="build-version" content="46">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '45';
+  var CURRENT_VERSION = '46';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -456,7 +456,7 @@ button { cursor: pointer; }
 .tag-purple { background: rgba(181,168,255,.15); color: #7A6AD9; }
 .tag-green { background: rgba(143,227,208,.2); color: #4FA897; }
 .tag-orange { background: rgba(255,209,102,.2); color: #C99A2E; }
-.tag-red { background: rgba(255,140,148,.15); color: var(--danger); }
+.tag-red { background: var(--primary-bg); color: var(--primary-dark); }
 .tag-blue { background: rgba(130,170,255,.15); color: #5A7ACC; }
 
 .empty-state {
@@ -792,7 +792,7 @@ button { cursor: pointer; }
 .hot-card:active { transform: scale(.98); }
 
 .hot-card.dy { border-left-color: #5DBE6F; }
-.hot-card.xhs { border-left-color: #FF2442; }
+.hot-card.xhs { border-left-color: #FF8C9E; }
 
 .hot-card-header {
   display: flex;
@@ -809,10 +809,10 @@ button { cursor: pointer; }
   border-radius: 6px;
 }
 .hot-platform.dy { background: #5DBE6F; color: #fff; }
-.hot-platform.xhs { background: #FF2442; color: #fff; }
-.hot-platform.hot { background: linear-gradient(135deg, #FE2C55, #FF0050); color: #fff; }
+.hot-platform.xhs { background: #FF8C9E; color: #fff; }
+.hot-platform.hot { background: #5DBE6F; color: #fff; }
 
-.hot-card.hot-trend { border-left-color: #FE2C55; }
+.hot-card.hot-trend { border-left-color: #5DBE6F; }
 
 .hot-title {
   font-size: 15px;
@@ -851,7 +851,7 @@ button { cursor: pointer; }
 }
 .hot-link-btn:active { opacity: .7; }
 .hot-link-btn.dy { background: #5DBE6F; color: #fff; }
-.hot-link-btn.xhs { background: #FF2442; color: #fff; }
+.hot-link-btn.xhs { background: #FF8C9E; color: #fff; }
 
 .hot-tags {
   display: flex;
