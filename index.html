@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="49">
+<meta name="build-version" content="50">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '49';
+  var CURRENT_VERSION = '50';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -3507,7 +3507,7 @@ const PODCAST_LIST = [
     desc: '杨天真带你聊聊职场、人生和自我成长，真诚又清醒',
     icon: '🌟',
     category: '自我成长',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6711e9b6694580c0a04a7893'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=天真不天真'
   },
   {
     id: 'p17',
@@ -3516,7 +3516,7 @@ const PODCAST_LIST = [
     desc: '鲁豫与不同女性对话，聊聊书籍、艺术与生命体验',
     icon: '🌸',
     category: '女性力量',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e6a0c1c4c0c0a04a7891'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=岩中花述'
   },
   {
     id: 'p18',
@@ -3525,7 +3525,7 @@ const PODCAST_LIST = [
     desc: '普通女孩的搞钱实战分享，搞钱才是最大的安全感',
     icon: '💰',
     category: '女性财商',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e7b0c1c4c0c0a04a7892'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=搞钱女孩'
   },
   {
     id: 'p19',
@@ -3534,7 +3534,7 @@ const PODCAST_LIST = [
     desc: '两个普通青年的自我观察日记，聊聊成长中的困惑与领悟',
     icon: '🧘',
     category: '心理成长',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e8c0c1c4c0c0a04a7893'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=贤者时间'
   },
   {
     id: 'p20',
@@ -3543,7 +3543,7 @@ const PODCAST_LIST = [
     desc: '用理性的尺子丈量世界，聊社会现象背后的逻辑',
     icon: '📏',
     category: '社会观察',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e9d0c1c4c0c0a04a7894'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=一把卷尺播客'
   },
   {
     id: 'p21',
@@ -3561,7 +3561,7 @@ const PODCAST_LIST = [
     desc: '真实罪案故事，用叙事手法还原案件全貌',
     icon: '🐱',
     category: '真实故事',
-    url: 'https://www.xiaoyuzhoufm.com/podcast/6701eae0c1c4c0c0a04a7895'
+    url: 'https://www.xiaoyuzhoufm.com/search?q=黑猫侦探社'
   }
 ];
 
@@ -3638,14 +3638,18 @@ function renderPodcast() {
   `;
 }
 
-function openPodcast(url) {
-  // 先复制链接到剪贴板
+function openPodcast(url, title) {
+  // 复制链接到剪贴板
   copyToClipboard(url);
-  toast('链接已复制，打开小宇宙App粘贴即可收听～');
-  // 尝试跳转小宇宙App
-  setTimeout(function() {
-    window.open(url, '_blank');
-  }, 300);
+  toast('链接已复制～正在打开小宇宙...');
+  // 尝试用 a 标签跳转，兼容 PWA
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function initPodcast() {}
