@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="48">
+<meta name="build-version" content="49">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '48';
+  var CURRENT_VERSION = '49';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -3499,6 +3499,69 @@ const PODCAST_LIST = [
     icon: '🎨',
     category: '个人表达',
     url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459d3418a84a0465c9e78'
+  },
+  {
+    id: 'p16',
+    title: '天真不天真',
+    author: '杨天真',
+    desc: '杨天真带你聊聊职场、人生和自我成长，真诚又清醒',
+    icon: '🌟',
+    category: '自我成长',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6711e9b6694580c0a04a7893'
+  },
+  {
+    id: 'p17',
+    title: '岩中花述',
+    author: '鲁豫',
+    desc: '鲁豫与不同女性对话，聊聊书籍、艺术与生命体验',
+    icon: '🌸',
+    category: '女性力量',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e6a0c1c4c0c0a04a7891'
+  },
+  {
+    id: 'p18',
+    title: '搞钱女孩',
+    author: '小辉 / 雯雯',
+    desc: '普通女孩的搞钱实战分享，搞钱才是最大的安全感',
+    icon: '💰',
+    category: '女性财商',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e7b0c1c4c0c0a04a7892'
+  },
+  {
+    id: 'p19',
+    title: '贤者时间',
+    author: '小张 / 丧浪',
+    desc: '两个普通青年的自我观察日记，聊聊成长中的困惑与领悟',
+    icon: '🧘',
+    category: '心理成长',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e8c0c1c4c0c0a04a7893'
+  },
+  {
+    id: 'p20',
+    title: '一把卷尺',
+    author: '一把卷尺',
+    desc: '用理性的尺子丈量世界，聊社会现象背后的逻辑',
+    icon: '📏',
+    category: '社会观察',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6701e9d0c1c4c0c0a04a7894'
+  },
+  {
+    id: 'p21',
+    title: '大内密谈',
+    author: '相征 / 若含',
+    desc: '中文播客界标杆，音乐文化深度对谈',
+    icon: '🎵',
+    category: '音乐文化',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/5e7459e3418a84a0465c9e7a'
+  },
+  {
+    id: 'p22',
+    title: '黑猫侦探社',
+    author: '黑猫 / 侦探',
+    desc: '真实罪案故事，用叙事手法还原案件全貌',
+    icon: '🐱',
+    category: '真实故事',
+    url: 'https://www.xiaoyuzhoufm.com/podcast/6701eae0c1c4c0c0a04a7895'
   }
 ];
 
@@ -3516,15 +3579,15 @@ function renderPodcast() {
   }
   const featured = PODCAST_LIST[seed];
   
-  // 获取显示的播客列表（默认6个，刷新时随机）
+  // 获取显示的播客列表（每次刷新都随机选8个）
   var displayed = Store.get('podcast_displayed', {});
   var podcastList;
-  if (displayed.date === today && displayed.items) {
+  if (displayed.date === today && displayed.items && !displayed.refreshed) {
     podcastList = displayed.items.map(id => PODCAST_LIST.find(p => p.id === id)).filter(Boolean);
   }
   if (!podcastList || podcastList.length < 6) {
-    podcastList = PODCAST_LIST.slice().sort(() => Math.random() - 0.5).slice(0, 6);
-    Store.set('podcast_displayed', { date: today, items: podcastList.map(p => p.id) });
+    podcastList = PODCAST_LIST.slice().sort(() => Math.random() - 0.5).slice(0, 8);
+    Store.set('podcast_displayed', { date: today, items: podcastList.map(p => p.id), refreshed: false });
   }
   
   const podcastCards = podcastList.map(p => `
@@ -3567,30 +3630,34 @@ function renderPodcast() {
       ${podcastCards}
       
       <div style="text-align:center;margin-top:20px;padding:16px;background:var(--bg-card);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
-        💡 提示：点击播客将跳转到<strong>小宇宙App</strong>收听<br>
-        如未安装小宇宙，可在App Store搜索下载
+        💡 点击播客卡片会<strong>自动复制链接</strong>并尝试打开小宇宙App<br>
+        如未自动跳转，请打开小宇宙App粘贴链接收听<br>
+        没安装小宇宙？可在App Store搜索下载
       </div>
     </div>
   `;
 }
 
 function openPodcast(url) {
-  // 尝试唤起小宇宙App
-  window.location.href = url;
-  // 如果2秒后还在，复制链接
-  setTimeout(() => {
-    copyToClipboard(url);
-    toast('已复制链接，请打开小宇宙App粘贴收听');
-  }, 2000);
+  // 先复制链接到剪贴板
+  copyToClipboard(url);
+  toast('链接已复制，打开小宇宙App粘贴即可收听～');
+  // 尝试跳转小宇宙App
+  setTimeout(function() {
+    window.open(url, '_blank');
+  }, 300);
 }
 
 function initPodcast() {}
 
 function refreshPodcast() {
+  // 强制重新随机
+  var today = todayStr();
+  var newList = PODCAST_LIST.slice().sort(() => Math.random() - 0.5).slice(0, 8);
+  Store.set('podcast_displayed', { date: today, items: newList.map(p => p.id), refreshed: true });
   Store.set('podcast_featured', {});
-  Store.set('podcast_displayed', {});
   renderPage('podcast');
-  toast('已刷新播客列表');
+  toast('已为你挑选新的播客～');
 }
 
 /* ==================== 7. 每日常识 ==================== */
