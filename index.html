@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="40">
+<meta name="build-version" content="41">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '40';
+  var CURRENT_VERSION = '41';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -552,9 +552,10 @@ button { cursor: pointer; }
 /* ==================== 每日打卡 ==================== */
 .checkin-progress {
   margin-bottom: 18px;
-  background: linear-gradient(135deg, #F8F8F8, #EEEEEE);
+  background: var(--bg-card);
   padding: 18px;
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .progress-info-full { width: 100%; }
@@ -568,13 +569,13 @@ button { cursor: pointer; }
 .progress-percent-text {
   font-size: 14px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--text-main);
 }
 
 .progress-bar-track {
   width: 100%;
   height: 6px;
-  background: rgba(255,159,181,.2);
+  background: #F0F0F0;
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 6px;
@@ -591,10 +592,10 @@ button { cursor: pointer; }
 .daily-motto {
   margin-bottom: 10px;
   padding: 10px 12px;
-  background: rgba(255,159,181,.12);
+  background: #F8F8F8;
   border-radius: var(--radius-sm);
   font-size: 15px;
-  color: var(--primary);
+  color: var(--text-main);
   font-weight: 600;
   text-align: center;
   line-height: 1.6;
