@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="35">
+<meta name="build-version" content="36">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '35';
+  var CURRENT_VERSION = '36';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -99,11 +99,11 @@ if ('serviceWorker' in navigator) {
   --text-sub: #5C4A42;
   --text-light: #8A786E;
   --bg-main: #FFFFFF;
-  --bg-card: #FFF8FA;
-  --bg-hover: #FFF0F4;
-  --border: #F8E3E8;
-  --shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --bg-card: #FFFFFF;
+  --bg-hover: #FAFAFA;
+  --border: #EEEEEE;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.1);
   --radius: 14px;
   --radius-sm: 10px;
   --sidebar-w: 200px;
