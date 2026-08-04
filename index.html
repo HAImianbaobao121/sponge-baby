@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="58">
+<meta name="build-version" content="59">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '58';
+  var CURRENT_VERSION = '59';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -596,40 +596,26 @@ button { cursor: pointer; }
   color: var(--text-main);
 }
 
-.progress-bar-track {
-  width: 100%;
-  height: 20px;
-  background: #FFE8EE;
-  border-radius: 14px;
-  overflow: visible;
+.wave-progress-wrap {
+  position: relative;
   margin-bottom: 10px;
-  position: relative;
-  border: 2px solid #FFC6D3;
 }
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #FF9FB5, #FF7FA0, #FF5C8A);
-  border-radius: 12px;
-  transition: width .6s cubic-bezier(.4, 0, .2, 1);
-  position: relative;
+.wave-progress {
+  width: 100%;
+  height: 60px;
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
 }
-.progress-bar-fill::after {
-  content: '🎀';
-  position: absolute;
-  right: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 24px;
-  line-height: 1;
-}
-.progress-emoji {
+.wave-emoji {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 22px;
+  font-size: 26px;
   transition: left .6s cubic-bezier(.4, 0, .2, 1);
   z-index: 2;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12));
+  pointer-events: none;
 }
 
 .progress-info-full p { font-size: 13px; color: var(--text-sub); margin-bottom: 4px; }
@@ -2016,14 +2002,35 @@ function renderCheckin() {
         <div class="progress-info-full">
           <div class="daily-motto">💬 ${escapeHtml(dailyMotto)}</div>
           <div class="progress-bar-header">
-            <h3>🎀 今日完成 ${done}/${total}</h3>
+            <h3>🌈 今日完成 ${done}/${total}</h3>
             <span class="progress-percent-text">${percent}%</span>
           </div>
-          <div class="progress-bar-track">
-            <div class="progress-bar-fill" style="width:${percent}%"></div>
-            <span class="progress-emoji" style="left:calc(${percent}% - 14px)">${percent === 100 ? '🎀' : percent >= 75 ? '🐱' : percent >= 50 ? '🍬' : percent >= 25 ? '🌸' : '🎀'}</span>
+          <div class="wave-progress-wrap">
+            <svg class="wave-progress" viewBox="0 0 400 60" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="waveClip${percent}">
+                  <rect x="0" y="0" width="${percent * 4}" height="60" rx="14"/>
+                </clipPath>
+                <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#A8E6CF"/>
+                  <stop offset="50%" stop-color="#7EC8E3"/>
+                  <stop offset="100%" stop-color="#8BB8F8"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="400" height="60" rx="14" fill="#F0F4F8"/>
+              <g clip-path="url(#waveClip${percent})">
+                <rect x="0" y="0" width="400" height="60" fill="url(#waveGrad)"/>
+                <path d="M0,30 Q25,20 50,30 T100,30 T150,30 T200,30 T250,30 T300,30 T350,30 T400,30 V60 H0 Z" fill="rgba(255,255,255,0.3)">
+                  <animate attributeName="d" dur="3s" repeatCount="indefinite"
+                    values="M0,30 Q25,20 50,30 T100,30 T150,30 T200,30 T250,30 T300,30 T350,30 T400,30 V60 H0 Z;
+                            M0,30 Q25,40 50,30 T100,30 T150,30 T200,30 T250,30 T300,30 T350,30 T400,30 V60 H0 Z;
+                            M0,30 Q25,20 50,30 T100,30 T150,30 T200,30 T250,30 T300,30 T350,30 T400,30 V60 H0 Z"/>
+                </path>
+              </g>
+            </svg>
+            <span class="wave-emoji" style="left:calc(${percent}% - 16px)">${percent === 100 ? '🌈' : percent >= 75 ? '🦄' : percent >= 50 ? '🐬' : percent >= 25 ? '🐣' : '🫧'}</span>
           </div>
-          <p>${percent === 100 ? '🎉 全部完成！你超棒的喵～' : percent >= 75 ? '🔥 马上全部搞定啦，冲鸭！' : percent >= 50 ? '💖 过半啦过半啦，继续加油' : percent >= 25 ? '🌸 小花开啦，慢慢来～' : '🎀 开启今天的打卡之旅吧'}</p>
+          <p>${percent === 100 ? '🎉 全部完成！你超棒的～' : percent >= 75 ? '🦄 马上全部搞定啦，冲鸭！' : percent >= 50 ? '🐬 过半啦，继续游啊游～' : percent >= 25 ? '🐣 小可爱正在努力中' : '🫧 开启今天的打卡之旅吧'}</p>
           <div class="progress-date">📅 ${todayStr()} ${dayOfWeek(todayStr())}</div>
         </div>
       </div>
