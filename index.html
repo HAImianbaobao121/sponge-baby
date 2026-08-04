@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="56">
+<meta name="build-version" content="57">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '56';
+  var CURRENT_VERSION = '57';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -598,38 +598,35 @@ button { cursor: pointer; }
 
 .progress-bar-track {
   width: 100%;
-  height: 14px;
-  background: var(--primary-bg);
-  border-radius: 10px;
+  height: 20px;
+  background: #FFE8EE;
+  border-radius: 14px;
   overflow: visible;
   margin-bottom: 10px;
   position: relative;
+  border: 2px solid #FFC6D3;
 }
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #A8E6C0, #7DCE8C, #5DBE6F);
-  border-radius: 10px;
+  background: linear-gradient(90deg, #FF9FB5, #FF7FA0, #FF5C8A);
+  border-radius: 12px;
   transition: width .6s cubic-bezier(.4, 0, .2, 1);
   position: relative;
 }
 .progress-bar-fill::after {
-  content: '';
+  content: '🎀';
   position: absolute;
-  right: -2px;
+  right: -10px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  background: #fff;
-  border: 3px solid #5DBE6F;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(93, 190, 111, 0.3);
+  font-size: 24px;
+  line-height: 1;
 }
 .progress-emoji {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 20px;
+  font-size: 22px;
   transition: left .6s cubic-bezier(.4, 0, .2, 1);
   z-index: 2;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
@@ -2019,14 +2016,14 @@ function renderCheckin() {
         <div class="progress-info-full">
           <div class="daily-motto">💬 ${escapeHtml(dailyMotto)}</div>
           <div class="progress-bar-header">
-            <h3>📊 今日完成 ${done}/${total}</h3>
+            <h3>🎀 今日完成 ${done}/${total}</h3>
             <span class="progress-percent-text">${percent}%</span>
           </div>
           <div class="progress-bar-track">
             <div class="progress-bar-fill" style="width:${percent}%"></div>
-            <span class="progress-emoji" style="left:calc(${percent}% - 12px)">${percent === 100 ? '🏆' : percent >= 75 ? '🐰' : percent >= 50 ? '🐢' : percent >= 25 ? '🐱' : '🐣'}</span>
+            <span class="progress-emoji" style="left:calc(${percent}% - 14px)">${percent === 100 ? '🎀' : percent >= 75 ? '🐱' : percent >= 50 ? '🍬' : percent >= 25 ? '🌸' : '🎀'}</span>
           </div>
-          <p>${percent === 100 ? '🎉 全部完成！你今天太棒啦～' : percent >= 75 ? '🔥 马上就全部搞定啦！' : percent >= 50 ? '💪 已经过半啦，继续冲！' : percent >= 25 ? '🌿 已经开始啦，加油呀' : '✨ 开启今天的打卡之旅吧'}</p>
+          <p>${percent === 100 ? '🎉 全部完成！你超棒的喵～' : percent >= 75 ? '🔥 马上全部搞定啦，冲鸭！' : percent >= 50 ? '💖 过半啦过半啦，继续加油' : percent >= 25 ? '🌸 小花开啦，慢慢来～' : '🎀 开启今天的打卡之旅吧'}</p>
           <div class="progress-date">📅 ${todayStr()} ${dayOfWeek(todayStr())}</div>
         </div>
       </div>
@@ -2424,46 +2421,30 @@ const HOT_TOPICS_TEMPLATES = {
     { title: '居家运动｜无器械瘦腿瘦肚子，亲测有效', tags: ['运动','瘦身','居家'], likes: '4.7w' }
   ],
   hot: [
-    { title: '科目三舞蹈挑战｜全网都在跳的魔性舞蹈', tags: ['科目三','舞蹈','挑战'], likes: '128.5w', trend: '🔥 本周最火' },
-    { title: '对镜自拍转场教程｜超火卡点变装模板', tags: ['转场','变装','教程'], likes: '92.3w', trend: '🔥 热榜TOP1' },
-    { title: '蛋仔派对 Gameplay分享｜超可爱通关攻略', tags: ['蛋仔派对','游戏','通关'], likes: '78.6w', trend: '🔥 热榜TOP2' },
-    { title: '跟着音乐卡点｜全网模仿的摇花手进阶版', tags: ['卡点','摇花手','舞蹈'], likes: '85.1w', trend: '🔥 热榜TOP3' },
-    { title: '三秒落泪挑战｜情绪表演赛道爆款', tags: ['演技','情绪','挑战'], likes: '69.8w', trend: '📈 热搜飙升' },
-    { title: '韩舞翻跳｜最新回归曲全网跟跳中', tags: ['韩舞','翻跳','Kpop'], likes: '95.6w', trend: '📈 热搜飙升' },
-    { title: '日常生活vlog模板｜沉浸式记录一天', tags: ['vlog','日常','模板'], likes: '53.2w', trend: '📈 热搜飙升' },
-    { title: '对口型唱歌挑战｜这几首歌全网都在唱', tags: ['对口型','唱歌','热门'], likes: '112.4w', trend: '🔥 热榜TOP1' },
-    { title: '房间一角氛围感拍照｜博主同款姿势教学', tags: ['拍照','氛围感','姿势'], likes: '48.9w', trend: '📈 热搜飙升' },
-    { title: '美食教程翻拍｜复刻网红同款美食挑战', tags: ['美食','复刻','教程'], likes: '61.7w', trend: '🔥 热榜TOP2' },
-    { title: '变装前后反差｜土味穿搭vs博主穿搭', tags: ['反差','穿搭','变装'], likes: '88.3w', trend: '🔥 热榜TOP3' },
-    { title: '零基础舞蹈教程｜每天三分钟学会一支舞', tags: ['舞蹈','教程','零基础'], likes: '56.5w', trend: '📈 热搜飙升' },
-    { title: '闺蜜合拍挑战｜双人卡点姿势大全', tags: ['合拍','闺蜜','挑战'], likes: '64.2w', trend: '📈 热搜飙升' },
-    { title: '素人改造计划｜路人变博主全流程', tags: ['改造','素人','博主'], likes: '83.9w', trend: '🔥 热榜TOP1' },
-    { title: '热门BGM使用指南｜配对音乐流量翻倍', tags: ['BGM','音乐','流量'], likes: '51.1w', trend: '📈 热搜飙升' },
-    { title: '恐龙抗狼手势舞｜魔性BGM全网跟跳', tags: ['恐龙抗狼','手势舞','魔性'], likes: '105.7w', trend: '🔥 本周最火' },
-    { title: '漫改变装｜二次元角色真人还原挑战', tags: ['漫改','变装','二次元'], likes: '76.8w', trend: '📈 热搜飙升' },
-    { title: '通勤穿搭一周不重样｜打工人OOTD', tags: ['通勤','穿搭','OOTD'], likes: '43.5w', trend: '📈 热搜飙升' },
-    { title: '一人食vlog｜独居女孩的治愈晚餐', tags: ['一人食','vlog','独居'], likes: '58.2w', trend: '📈 热搜飙升' },
-    { title: '反差感变身｜素颜到精致妆容全过程', tags: ['反差','妆容','变身'], likes: '91.4w', trend: '🔥 热榜TOP2' },
-    { title: '卡点剪辑教程｜小白也能剪出大片感', tags: ['剪辑','卡点','教程'], likes: '47.6w', trend: '📈 热搜飙升' },
-    { title: '情侣日常合拍｜甜甜的恋爱vlog', tags: ['情侣','合拍','恋爱'], likes: '72.3w', trend: '📈 热搜飙升' },
-    { title: '宿舍好物分享｜学生党平价提升幸福感', tags: ['宿舍','好物','学生党'], likes: '39.8w', trend: '📈 热搜飙升' },
-    { title: '宠物搞笑日常｜猫狗双全的快乐生活', tags: ['宠物','搞笑','日常'], likes: '98.5w', trend: '🔥 本周最火' },
-    { title: '古风汉服变装｜一秒穿越进画里', tags: ['汉服','古风','变装'], likes: '84.6w', trend: '🔥 热榜TOP3' },
-    { title: '减脂餐教程｜好吃不胖的一周食谱', tags: ['减脂餐','食谱','健康'], likes: '55.3w', trend: '📈 热搜飙升' },
-    { title: '翻唱热门歌曲｜嗓音太好听了吧', tags: ['翻唱','音乐','热门'], likes: '67.9w', trend: '📈 热搜飙升' },
-    { title: '拍照姿势大全｜拍出博主同款高级感', tags: ['拍照','姿势','高级感'], likes: '44.1w', trend: '📈 热搜飙升' },
-    { title: '手工DIY教程｜低成本装饰房间', tags: ['手工','DIY','装饰'], likes: '35.7w', trend: '📈 热搜飙升' },
-    { title: '健身打卡｜30天身材变化挑战', tags: ['健身','打卡','变化'], likes: '62.8w', trend: '📈 热搜飙升' },
-    { title: '美妆教程｜夏日清透底妆不脱妆', tags: ['美妆','底妆','夏日'], likes: '49.5w', trend: '📈 热搜飙升' },
-    { title: '旅行vlog｜小众景点打卡攻略', tags: ['旅行','vlog','打卡'], likes: '57.4w', trend: '📈 热搜飙升' },
-    { title: 'AI绘画挑战｜输入文字生成大片', tags: ['AI','绘画','科技'], likes: '73.2w', trend: '📈 热搜飙升' },
-    { title: '剧情短片反转｜最后结局意想不到', tags: ['剧情','反转','短片'], likes: '89.7w', trend: '🔥 热榜TOP2' },
-    { title: '开箱测评｜最近买到的神仙好物', tags: ['开箱','测评','好物'], likes: '46.3w', trend: '📈 热搜飙升' },
-    { title: '职场穿搭｜温柔知性通勤风', tags: ['职场','穿搭','通勤'], likes: '38.9w', trend: '📈 热搜飙升' },
-    { title: '早餐教程｜10分钟搞定精致brunch', tags: ['早餐','教程','brunch'], likes: '42.7w', trend: '📈 热搜飙升' },
-    { title: '房间收纳整理｜极简主义生活方式', tags: ['收纳','整理','极简'], likes: '34.6w', trend: '📈 热搜飙升' },
-    { title: '猫咪搞笑合集｜主子的迷惑行为', tags: ['猫咪','搞笑','合集'], likes: '102.3w', trend: '🔥 本周最火' },
-    { title: '温柔翻唱｜睡前必听治愈系歌曲', tags: ['翻唱','治愈','睡前'], likes: '54.8w', trend: '📈 热搜飙升' },
+    { title: '科目三舞蹈翻拍｜全网都在跳的爆款舞步', tags: ['翻拍','科目三','舞蹈'], likes: '156.8w', trend: '🔥 翻拍榜TOP1' },
+    { title: '对镜自拍转场｜博主同款卡点模板翻拍', tags: ['翻拍','转场','卡点'], likes: '132.5w', trend: '🔥 翻拍榜TOP2' },
+    { title: '三秒变装挑战｜反差造型翻拍模板', tags: ['翻拍','变装','反差'], likes: '118.3w', trend: '🔥 翻拍榜TOP3' },
+    { title: '对口型唱歌挑战｜这些歌全网都在翻拍', tags: ['翻拍','对口型','唱歌'], likes: '145.7w', trend: '🔥 翻拍榜TOP1' },
+    { title: '「你一句春不晚」古风变装翻拍挑战', tags: ['翻拍','古风','变装'], likes: '98.6w', trend: '🔥 翻拍榜TOP2' },
+    { title: '蛋仔派对跳舞挑战｜全网玩家翻拍中', tags: ['翻拍','蛋仔派对','跳舞'], likes: '89.2w', trend: '📈 热搜飙升' },
+    { title: '韩舞翻拍挑战｜最新回归曲全网跟跳', tags: ['翻拍','韩舞','Kpop'], likes: '112.4w', trend: '📈 热搜飙升' },
+    { title: '土味穿搭vs博主穿搭｜变装翻拍模板', tags: ['翻拍','穿搭','反差'], likes: '76.9w', trend: '📈 热搜飙升' },
+    { title: '卡点转场翻拍｜小白也能剪出爆款', tags: ['翻拍','卡点','剪辑'], likes: '68.5w', trend: '📈 热搜飙升' },
+    { title: '房间氛围感拍照翻拍｜博主姿势教学', tags: ['翻拍','拍照','氛围感'], likes: '55.3w', trend: '📈 热搜飙升' },
+    { title: '日常vlog模板翻拍｜沉浸式记录一天', tags: ['翻拍','vlog','日常'], likes: '72.1w', trend: '📈 热搜飙升' },
+    { title: '素人改造翻拍｜路人变博主全流程', tags: ['翻拍','改造','素人'], likes: '94.7w', trend: '🔥 翻拍榜TOP3' },
+    { title: '美食复刻挑战｜翻拍网红同款美食教程', tags: ['翻拍','美食','复刻'], likes: '63.8w', trend: '📈 热搜飙升' },
+    { title: '闺蜜合拍翻拍挑战｜双人卡点姿势大全', tags: ['翻拍','闺蜜','合拍'], likes: '81.6w', trend: '📈 热搜飙升' },
+    { title: '汉服变装翻拍｜一秒穿越古风大片', tags: ['翻拍','汉服','变装'], likes: '105.2w', trend: '🔥 翻拍榜TOP1' },
+    { title: '零基础舞蹈翻拍教程｜每天三分钟学会', tags: ['翻拍','舞蹈','教程'], likes: '59.4w', trend: '📈 热搜飙升' },
+    { title: '漫改变装翻拍｜二次元角色真人还原', tags: ['翻拍','漫改','变装'], likes: '87.3w', trend: '📈 热搜飙升' },
+    { title: '宠物搞笑翻拍｜主子迷惑行为挑战', tags: ['翻拍','宠物','搞笑'], likes: '128.6w', trend: '🔥 翻拍榜TOP2' },
+    { title: '剧情反转翻拍｜最后结局意想不到', tags: ['翻拍','剧情','反转'], likes: '103.5w', trend: '🔥 翻拍榜TOP3' },
+    { title: '手势舞翻拍挑战｜全网最火舞蹈模板', tags: ['翻拍','手势舞','舞蹈'], likes: '138.2w', trend: '🔥 翻拍榜TOP1' },
+    { title: '变装前后反差翻拍｜素颜到精致全过程', tags: ['翻拍','反差','妆容'], likes: '91.8w', trend: '📈 热搜飙升' },
+    { title: '热门BGM翻拍指南｜配音乐流量翻倍', tags: ['翻拍','BGM','音乐'], likes: '65.7w', trend: '📈 热搜飙升' },
+    { title: '健身打卡翻拍｜30天身材变化挑战', tags: ['翻拍','健身','打卡'], likes: '77.3w', trend: '📈 热搜飙升' },
+    { title: 'AI绘画翻拍挑战｜文字生成大片效果', tags: ['翻拍','AI','绘画'], likes: '82.5w', trend: '📈 热搜飙升' },
   ]
 };
 
@@ -3659,17 +3640,27 @@ function renderPodcast() {
       ${podcastCards}
       
       <div style="text-align:center;margin-top:20px;padding:16px;background:var(--bg-card);border-radius:var(--radius);font-size:13px;color:var(--text-sub)">
-        💡 点击播客会<strong>自动复制播客名称</strong><br>
-        然后打开小宇宙App，粘贴名称搜索就能收听啦
+        💡 点击播客自动<strong>复制链接</strong>并跳转小宇宙App收听
       </div>
     </div>
   `;
 }
 
 function openPodcast(url, title) {
-  // 只复制播客名称，让用户到小宇宙App内搜索
-  copyToClipboard(title);
-  toast('已复制「' + title + '」\n请打开小宇宙App粘贴搜索收听');
+  // 复制链接
+  copyToClipboard(url);
+  // 尝试跳转小宇宙App
+  var a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  // 延迟提示
+  setTimeout(function() {
+    toast('链接已复制，如未跳转请打开小宇宙App收听～');
+  }, 1500);
 }
 
 function initPodcast() {}
@@ -3756,7 +3747,40 @@ const KNOWLEDGE_BANK = [
   { cat: '科技', text: '中国第一位航天员是杨利伟，2003年10月15日乘神舟五号进入太空。', icon: '🚀' },
   { cat: '科技', text: '袁隆平被誉为"杂交水稻之父"，他的研究大大提高了水稻产量。', icon: '🌾' },
   { cat: '科技', text: '中国高铁运营里程世界第一，截至2024年已超过4.5万公里。', icon: '🚄' },
-  { cat: '科技', text: '北斗卫星导航系统是中国自主研发的全球卫星导航系统，2020年正式开通。', icon: '🛰️' }
+  { cat: '科技', text: '北斗卫星导航系统是中国自主研发的全球卫星导航系统，2020年正式开通。', icon: '🛰️' },
+  // 历史知识扩展
+  { cat: '历史知识', text: '中国近代史的开端是1840年鸦片战争，英国用坚船利炮打开了中国闭关锁国的大门。', icon: '⏳' },
+  { cat: '历史知识', text: '洋务运动（1861-1895年）以"自强""求富"为口号，创办了江南制造总局等近代工业。', icon: '🏭' },
+  { cat: '历史知识', text: '戊戌变法（1898年）由康有为、梁启超主导，仅持续103天，又称"百日维新"。', icon: '📜' },
+  { cat: '历史知识', text: '《辛丑条约》签订于1901年，中国赔款4.5亿两白银，是近代最屈辱的不平等条约。', icon: '⚖️' },
+  { cat: '历史知识', text: '1911年辛亥革命推翻清朝，孙中山被推举为中华民国临时大总统。', icon: '🏴' },
+  { cat: '历史知识', text: '新文化运动（1915年开始）提倡民主与科学，陈独秀创办《新青年》杂志。', icon: '📰' },
+  { cat: '历史知识', text: '1921年7月，中国共产党第一次全国代表大会在上海召开，标志着中共正式成立。', icon: '🔴' },
+  { cat: '历史知识', text: '南昌起义（1927年8月1日）打响了武装反抗国民党反动派的第一枪。', icon: '🔫' },
+  { cat: '历史知识', text: '红军长征从1934年10月开始，1936年10月结束，行程约二万五千里。', icon: '🥾' },
+  { cat: '历史知识', text: '遵义会议（1935年1月）确立了毛泽东在党和红军中的领导地位。', icon: '🏛️' },
+  { cat: '历史知识', text: '西安事变（1936年12月12日）由张学良、杨虎城发动，促成了抗日民族统一战线。', icon: '🤝' },
+  { cat: '历史知识', text: '七七事变（1937年7月7日）标志着全面抗日战争的开始。', icon: '💥' },
+  { cat: '历史知识', text: '平型关大捷（1937年9月）是八路军出师以来取得的第一个大胜仗。', icon: '⚔️' },
+  { cat: '历史知识', text: '百团大战（1940年8月-12月）是八路军在华北发动的大规模进攻战役。', icon: '💣' },
+  { cat: '历史知识', text: '1945年8月15日，日本宣布无条件投降，抗日战争取得胜利。', icon: '🕊️' },
+  { cat: '历史知识', text: '三大战役（辽沈、淮海、平津）是解放战争中具有决定意义的战役。', icon: '🗺️' },
+  { cat: '历史知识', text: '1949年10月1日，毛泽东在天安门城楼宣告中华人民共和国成立。', icon: '🎉' },
+  { cat: '历史知识', text: '抗美援朝战争（1950-1953年）打出了国威军威，彭德怀任司令员。', icon: '🪖' },
+  { cat: '历史知识', text: '第一个五年计划（1953-1957年）以重工业建设为核心，建立了初步的工业体系。', icon: '🏗️' },
+  { cat: '历史知识', text: '中国第一颗原子弹于1964年10月16日爆炸成功。', icon: '☢️' },
+  { cat: '历史知识', text: '中国第一颗氢弹于1967年6月17日爆炸成功，从原子弹到氢弹仅用了2年8个月。', icon: '💥' },
+  { cat: '历史知识', text: '1971年10月25日，中国恢复在联合国的合法席位。', icon: '🇺🇳' },
+  { cat: '历史知识', text: '1972年尼克松访华，中美关系开始走向正常化。', icon: '🇨🇳🇺🇸' },
+  { cat: '历史知识', text: '1978年12月，十一届三中全会召开，开启了改革开放的历史新时期。', icon: '🚪' },
+  { cat: '历史知识', text: '1979年中美正式建交，邓小平访美，这是新中国领导人首次访美。', icon: '✈️' },
+  { cat: '历史知识', text: '经济特区中最早设立的是深圳、珠海、汕头、厦门（1980年）。', icon: '🏙️' },
+  { cat: '历史知识', text: '香港于1997年7月1日回归祖国，实行"一国两制"方针。', icon: '🇭🇰' },
+  { cat: '历史知识', text: '澳门于1999年12月20日回归祖国。', icon: '🇲🇴' },
+  { cat: '历史知识', text: '中国于2001年12月11日正式加入世界贸易组织（WTO）。', icon: '🌐' },
+  { cat: '历史知识', text: '2008年北京成功举办第29届夏季奥运会，中国金牌数位居第一。', icon: '🥇' },
+  { cat: '历史知识', text: '2013年习近平提出"一带一路"倡议，包括丝绸之路经济带和21世纪海上丝绸之路。', icon: '🐫' },
+  { cat: '历史知识', text: '2021年中国共产党迎来百年华诞，全面建成小康社会。', icon: '🏆' }
 ];
 
 function getKnowledge() {
