@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="build-version" content="57">
+<meta name="build-version" content="58">
 <!-- Service Worker for cache management -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -17,7 +17,7 @@ if ('serviceWorker' in navigator) {
 }
 // Auto-refresh when new version detected
 (function() {
-  var CURRENT_VERSION = '57';
+  var CURRENT_VERSION = '58';
   var saved = localStorage.getItem('spongeBaby_version');
   if (saved && saved !== CURRENT_VERSION) {
     // Clear caches
@@ -36,7 +36,7 @@ if ('serviceWorker' in navigator) {
 </script>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="海绵饱饱">
-<meta name="theme-color" content="#EAF7EE">
+<meta name="theme-color" content="#FFF2F6">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/svg+xml" href="icon.svg" id="faviconLink">
 <link rel="apple-touch-icon" href="icon.svg" id="appleIconLink">
@@ -89,25 +89,25 @@ if ('serviceWorker' in navigator) {
 <style>
 /* ==================== 全局变量与重置 ==================== */
 :root {
-  --primary: #7DCE8C;
-  --primary-dark: #5DBE6F;
-  --primary-light: #D5F0DC;
-  --primary-bg: #F0FAF3;
-  --secondary: #FFC6D3;
+  --primary: #F2B8C4;
+  --primary-dark: #E89AAA;
+  --primary-light: #FDE8EE;
+  --primary-bg: #FFF5F8;
+  --secondary: #FFD4DD;
   --secondary-light: #FFF0F4;
-  --accent: #A8E6C0;
-  --warning: #FFD166;
-  --danger: #FF8C9E;
-  --success: #5DBE6F;
-  --text-main: #2A3328;
-  --text-sub: #5C6B58;
-  --text-light: #9AAB95;
+  --accent: #F5C8D2;
+  --warning: #FFE5B0;
+  --danger: #E8889A;
+  --success: #A8D8B8;
+  --text-main: #3A2A30;
+  --text-sub: #6E5860;
+  --text-light: #A8989A;
   --bg-main: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-hover: #F7FBF7;
-  --border: #E8F0E8;
-  --shadow: 0 4px 16px rgba(120, 200, 140, 0.1);
-  --shadow-hover: 0 8px 24px rgba(120, 200, 140, 0.15);
+  --bg-hover: #FFF8FA;
+  --border: #F5E8EC;
+  --shadow: 0 4px 16px rgba(230, 180, 190, 0.12);
+  --shadow-hover: 0 8px 24px rgba(230, 180, 190, 0.18);
   --radius: 18px;
   --radius-sm: 14px;
   --sidebar-w: 200px;
@@ -154,7 +154,7 @@ button { cursor: pointer; }
 .sidebar {
   width: var(--sidebar-w);
   flex-shrink: 0;
-  background: linear-gradient(180deg, #F2FAF4 0%, #EAF7EE 100%);
+  background: linear-gradient(180deg, #FFF8FA 0%, #FFF2F6 100%);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -175,7 +175,7 @@ button { cursor: pointer; }
   width: 100%;
   height: 100px;
   border-radius: var(--radius);
-  background: linear-gradient(135deg, #7DCE8C, #5DBE6F);
+  background: linear-gradient(135deg, #F2B8C4, #E89AAA);
   background-size: cover;
   background-position: center;
   display: flex;
@@ -184,7 +184,7 @@ button { cursor: pointer; }
   font-size: 56px;
   flex-shrink: 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(93, 190, 111, 0.3);
+  box-shadow: 0 2px 8px rgba(230, 170, 185, 0.3);
   transition: transform .2s;
   position: relative;
   overflow: hidden;
@@ -256,7 +256,7 @@ button { cursor: pointer; }
   cursor: pointer;
   transition: all .2s ease;
   margin-bottom: 6px;
-  color: #3A4A36;
+  color: #4A3038;
   font-weight: 600;
   font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   position: relative;
@@ -265,9 +265,9 @@ button { cursor: pointer; }
 .nav-item:hover { background: var(--bg-hover); }
 
 .nav-item.active {
-  background: linear-gradient(135deg, #7DCE8C, #5DBE6F);
+  background: linear-gradient(135deg, #F2B8C4, #E89AAA);
   color: #fff;
-  box-shadow: 0 3px 10px rgba(93, 190, 111, 0.25);
+  box-shadow: 0 3px 10px rgba(230, 170, 185, 0.25);
 }
 
 .nav-icon {
@@ -408,9 +408,9 @@ button { cursor: pointer; }
 .btn:active { transform: scale(.95); }
 
 .btn-primary {
-  background: linear-gradient(135deg, #7DCE8C, #5DBE6F);
+  background: linear-gradient(135deg, #F2B8C4, #E89AAA);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(93, 190, 111, 0.25);
+  box-shadow: 0 2px 8px rgba(230, 170, 185, 0.25);
 }
 .btn-primary:active { transform: scale(.93); }
 
@@ -1118,7 +1118,7 @@ button { cursor: pointer; }
 
 .summary-card.income { background: linear-gradient(135deg, #6BCB77, #4FA859); }
 .summary-card.expense { background: linear-gradient(135deg, #FFC6D3, #FFA5B8); }
-.summary-card.extra { background: linear-gradient(135deg, #A8E6C0, #7DCE8C); }
+.summary-card.extra { background: linear-gradient(135deg, #F5C8D2, #F2B8C4); }
 
 .summary-label { font-size: 12px; opacity: .9; margin-bottom: 4px; }
 .summary-amount { font-size: 20px; font-weight: 700; }
@@ -1387,7 +1387,7 @@ button { cursor: pointer; }
     max-width: 62px;
     transform: none;
     flex-shrink: 0;
-    background: linear-gradient(180deg, #F2FAF4 0%, #EAF7EE 100%);
+    background: linear-gradient(180deg, #FFF8FA 0%, #FFF2F6 100%);
     border-right: 1px solid var(--border);
     border-bottom: none;
     padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
@@ -1522,7 +1522,7 @@ button { cursor: pointer; }
 
 /* ==================== 播客 ==================== */
 .podcast-featured {
-  background: linear-gradient(135deg, #7DCE8C 0%, #5DBE6F 100%);
+  background: linear-gradient(135deg, #F2B8C4 0%, #E89AAA 100%);
   border-radius: var(--radius);
   padding: 16px;
   color: #fff;
@@ -1686,8 +1686,8 @@ button { cursor: pointer; }
 <svg class="svg-defs">
   <defs>
     <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7DCE8C"/>
-      <stop offset="100%" stop-color="#5DBE6F"/>
+      <stop offset="0%" stop-color="#F2B8C4"/>
+      <stop offset="100%" stop-color="#E89AAA"/>
     </linearGradient>
   </defs>
 </svg>
@@ -2930,8 +2930,8 @@ function renderWeightChart(records) {
     <svg class="weight-chart" viewBox="0 0 ${w} ${h}" style="width:100%;max-width:400px;display:block;margin:0 auto">
       <defs>
         <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#7DCE8C" stop-opacity="0.2"/>
-          <stop offset="100%" stop-color="#7DCE8C" stop-opacity="0"/>
+          <stop offset="0%" stop-color="#F2B8C4" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#F2B8C4" stop-opacity="0"/>
         </linearGradient>
       </defs>
       ${yLabels.map((v, i) => {
@@ -2940,8 +2940,8 @@ function renderWeightChart(records) {
         <text x="${pad.l-5}" y="${y+3}" font-size="9" fill="#B5A8C4" text-anchor="end">${v}</text>`;
       }).join('')}
       <path d="${areaD}" fill="url(#areaGrad)"/>
-      <path d="${pathD}" fill="none" stroke="#5DBE6F" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#fff" stroke="#5DBE6F" stroke-width="2"/>`).join('')}
+      <path d="${pathD}" fill="none" stroke="#E89AAA" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#fff" stroke="#E89AAA" stroke-width="2"/>`).join('')}
       ${points.map((p, i) => {
         if (records.length > 8 && i % 2 !== 0) return '';
         return `<text x="${p.x}" y="${h-8}" font-size="8" fill="#B5A8C4" text-anchor="middle">${p.date.slice(5)}</text>`;
@@ -3272,8 +3272,8 @@ function renderAssets() {
         <div class="finance-main-tab active">🏦 总资产 <span style="font-size:11px;opacity:.8">${totalAssets.toFixed(0)}</span></div>
         <div class="finance-main-tab" onclick="switchFinanceMainTab('debts')">💳 总负债</div>
       </div>
-      <div class="card" style="background:linear-gradient(135deg,#F0FAF3,#E0F5E6);text-align:center;padding:20px">
-        <div style="font-size:13px;color:var(--success)">💰 总资产</div>
+      <div class="card" style="background:linear-gradient(135deg,#FFF5F8,#FFEEF2);text-align:center;padding:20px">
+        <div style="font-size:13px;color:var(--primary-dark)">💰 总资产</div>
         <div style="font-size:32px;font-weight:700;color:var(--success)">${totalAssets.toFixed(2)}<span style="font-size:16px;font-weight:400"> 元</span></div>
       </div>
       ${ungrouped.map(assetItemHtml).join('')}
@@ -3349,7 +3349,7 @@ function renderDebts() {
             <span class="progress-percent-text">${debtPercent}%</span>
           </div>
           <div class="progress-bar-track">
-            <div class="progress-bar-fill" style="width:${debtPercent}%;background:linear-gradient(90deg,#7DCE8C,#5DBE6F)"></div>
+            <div class="progress-bar-fill" style="width:${debtPercent}%;background:linear-gradient(90deg,#F2B8C4,#E89AAA)"></div>
           </div>
           <p>${debtPercent===100?'🎉 本月全部还清！' : debtPercent>=50?'💪 已完成过半' : '📌 记得按时还款哦'}</p>
           <div class="progress-date">总额 ${totalDebts.toFixed(2)} 元</div>
@@ -4539,8 +4539,8 @@ function updateDesktopIcon() {
   
   // 渐变背景
   const grad = ctx.createLinearGradient(0, 0, 192, 192);
-  grad.addColorStop(0, '#7DCE8C');
-  grad.addColorStop(1, '#5DBE6F');
+  grad.addColorStop(0, '#F2B8C4');
+  grad.addColorStop(1, '#E89AAA');
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.roundRect(0, 0, 192, 192, 36);
@@ -4594,7 +4594,7 @@ function changeLogo() {
         <button class="btn btn-ghost" style="flex:1;padding:12px" onclick="document.getElementById('avatarFileInput').click()">📷 从相册选择</button>
         ${avatarData.startsWith('img:') ? '<button class="btn btn-danger" style="flex:1;padding:12px" onclick="removeAvatarImage()">🗑 恢复默认</button>' : ''}
       </div>
-      <div style="padding:10px;background:#F0FAF3;border-radius:10px;font-size:12px;color:#5DBE6F;line-height:1.6">
+      <div style="padding:10px;background:#FFF5F8;border-radius:10px;font-size:12px;color:#E89AAA;line-height:1.6">
         📱 <b>修改桌面图标：</b>换好头像后 → 长按桌面图标删除 → Safari打开链接 → 分享 → 添加到主屏幕
       </div>
     `,
